@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "pf/pf.h"
-#include "rm/rm.h"
+#include "../pf/pf.h"
+#include "../rm/rm.h"
 
 # define IX_EOF (-1)  // end of the index scan
 
