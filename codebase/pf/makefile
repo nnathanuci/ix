@@ -22,3 +22,4 @@ $(CODEROOT)/pf/libpf.a:
 .PHONY: clean
 clean:
 	-rm pftest *.a *.o *~
+	-rm *.test

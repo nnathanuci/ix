@@ -1,9 +1,11 @@
 #ifndef _pf_h_
 #define _pf_h_
 
+#include <cstdio>
+
 using namespace std;
 
-typedef int RC;
+typedef int RC; // return code
 typedef unsigned PageNum;
 
 #define PF_PAGE_SIZE 4096
@@ -23,10 +25,10 @@ public:
 
 protected:    
     PF_Manager();                                                       // Constructor
-    ~PF_Manager   ();                                                   // Destructor
+    ~PF_Manager();                                                      // Destructor
 
 private:
-    static PF_Manager *_pf_manager;
+    static PF_Manager *_pf_manager;                                     // (singleton pattern)
 };
 
 
@@ -36,10 +38,17 @@ public:
     PF_FileHandle();                                                    // Default constructor
     ~PF_FileHandle();                                                   // Destructor
 
+    RC OpenFile(const char *fileName);                                  // Open File
+    RC CloseFile();                                                     // Close File
+    RC TruncateFile();                                                  // Truncate File.
+
     RC ReadPage(PageNum pageNum, void *data);                           // Get a specific page
     RC WritePage(PageNum pageNum, const void *data);                    // Write a specific page
     RC AppendPage(const void *data);                                    // Append a specific page
     unsigned GetNumberOfPages();                                        // Get the number of pages in the file
- };
+
+private:
+    FILE *handle;
+};
  
- #endif
+#endif
