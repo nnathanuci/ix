@@ -1,4 +1,3 @@
-
 #ifndef _ix_h_
 #define _ix_h_
 
@@ -33,12 +32,14 @@ class IX_Manager {
  
  private:
   static IX_Manager *_ix_manager;
+  PF_Manager *pf;
+  RM *rm;
 };
 
 
 class IX_IndexHandle {
  public:
-  IX_IndexHandle  ();                           // Constructor
+  IX_IndexHandle  () { pf = PF_Manager::Instance(); } // Constructor
   ~IX_IndexHandle ();                           // Destructor
 
   // The following two functions are using the following format for the passed key value.
@@ -47,6 +48,18 @@ class IX_IndexHandle {
   //     For varchar: use 4 bytes to store the length of characters, then store the actual characters.
   RC InsertEntry(void *key, const RID &rid);  // Insert new index entry
   RC DeleteEntry(void *key, const RID &rid);  // Delete index entry
+
+  /* helper functions to write/read nodes based on id. */
+  /* RC WriteNode(int id, void *data); */
+  /* RC ReadNode(int id, void *data); */
+
+  RC OpenFile(const char *fileName, Attribute &a) { { if(pf->OpenFile(fileName, handle)) return -1; } attr = a; return 0; }
+  RC CloseFile() { { if(pf->CloseFile(handle)) return -1; } return 0; }
+
+ private:
+  PF_Manager *pf;
+  PF_FileHandle handle;
+  Attribute attr;
 };
 
 

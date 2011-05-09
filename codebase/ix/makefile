@@ -4,10 +4,12 @@ include ../makefile.inc
 all: libix.a ixtest
 
 # lib file dependencies
-libix.a: libix.a(ix.o)  # and possibly other .o files
+libix.a: libix.a(ix.o ixmgr.o)  # and possibly other .o files
 
 # c file dependencies
 ix.o: ix.h
+
+ixmgr.o: ix.h
 
 ixtest.o: ix.h
 
