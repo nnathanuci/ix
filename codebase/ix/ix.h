@@ -40,7 +40,7 @@ class IX_Manager {
 class IX_IndexHandle {
  public:
   IX_IndexHandle  () { pf = PF_Manager::Instance(); } // Constructor
-  ~IX_IndexHandle ();                           // Destructor
+  ~IX_IndexHandle () { }                          // Destructor
 
   // The following two functions are using the following format for the passed key value.
   //  1) data is a concatenation of values of the attributes
@@ -55,6 +55,10 @@ class IX_IndexHandle {
 
   RC OpenFile(const char *fileName, Attribute &a) { { if(pf->OpenFile(fileName, handle)) return -1; } attr = a; return 0; }
   RC CloseFile() { { if(pf->CloseFile(handle)) return -1; } return 0; }
+  unsigned GetNumberOfPages() { return handle.GetNumberOfPages(); }
+  RC ReadNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
+  RC WriteNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
+  RC NewNode(const void *data) { return handle.AppendPage(data); }
 
  private:
   PF_Manager *pf;
