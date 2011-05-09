@@ -40,7 +40,7 @@ public:
 
     RC OpenFile(const char *fileName);                                  // Open File
     RC CloseFile();                                                     // Close File
-    RC TruncateFile();                                                  // Truncate File.
+    RC TruncateFile(const char *tablename);                             // Truncate File.
 
     RC ReadPage(PageNum pageNum, void *data);                           // Get a specific page
     RC WritePage(PageNum pageNum, const void *data);                    // Write a specific page

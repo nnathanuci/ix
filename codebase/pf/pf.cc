@@ -107,18 +107,24 @@ RC PF_FileHandle::CloseFile()
     return -1;
 }
 
-RC PF_FileHandle::TruncateFile()
+RC PF_FileHandle::TruncateFile(const char *tablename)
 {
     /* no handle open, therefore cannot truncate. */
     if(!handle)
         return -1;
 
-    /* reopen the stream, use mode to truncate, will always return the same object, otherwise you couldn't freopen(stdin), etc. */
-    if(!(handle = freopen(NULL, "wb+", handle)))
+    /* close the stream. */
+    if(!fclose(handle))
+        handle = NULL;
+    else
         return -1;
 
+    /* open the stream, truncate the file. */
+    if(handle = fopen(tablename, "wb+"))
+        return 0;
+
     /* error */
-    return 0;
+    return -1;
 }
 
 RC PF_FileHandle::ReadPage(PageNum pageNum, void *data)
