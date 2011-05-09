@@ -55,6 +55,8 @@ RC IX_Manager::CreateIndex(const string tableName, const string attributeName)
     /* create the index file. */
     if (pf->CreateFile((tableName+"."+attributeName).c_str()))
         return -1;
+
+    return 0;
 }
 
 RC IX_Manager::DestroyIndex(const string tableName, const string attributeName)
@@ -95,6 +97,14 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
     /* open the index. */
     if(indexHandle.OpenFile((tableName+"."+attributeName).c_str(), attr))
         return -1;
+
+    /* create root node if doesn't exist already. */
+    if (indexHandle.GetNumberOfPages() == 0)
+    {
+        char root_node[PF_PAGE_SIZE] = {0};
+        if(indexHandle.NewNode(root_node))
+            return -1;
+    }
 
     return 0;
 }
