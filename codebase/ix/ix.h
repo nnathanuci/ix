@@ -58,6 +58,8 @@ class IX_IndexHandle {
   unsigned GetNumberOfPages() { return handle.GetNumberOfPages(); }
   RC ReadNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
   RC WriteNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
+
+  /* rather than create a new node, can scan the file for a node with free space, and only if necessary create a new page. */
   RC NewNode(const void *data) { return handle.AppendPage(data); }
 
  private:
