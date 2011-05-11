@@ -10,9 +10,9 @@
 # define IX_EOF (-1)  // end of the index scan
 
 /* used only for the dump routines. */
-#define DUMP_TYPE_DELETED (0)
+#define DUMP_TYPE_DATA (0)
 #define DUMP_TYPE_INDEX (1)
-#define DUMP_TYPE_DATA (2)
+#define DUMP_TYPE_DELETED (2)
 #define DUMP_NO_PID (0)
 
 
@@ -131,9 +131,10 @@ class IX_IndexScan {
   int k_len;
 
   char last_node[PF_PAGE_SIZE];
-  unsigned int last_offset;
-  unsigned int last_entry;
-  unsigned int last_pid;
+  unsigned int last_node_next;
+  unsigned int last_node_pid;
+
+  unsigned int n_matches;
 };
 
 // print out the error message for a given return code

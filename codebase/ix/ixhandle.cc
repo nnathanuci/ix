@@ -45,6 +45,7 @@ RC IX_IndexHandle::DeleteNode(unsigned int pid, const void *data)
 {
     /* create a buffer of all 0. */
     char buf[PF_PAGE_SIZE] = {0};
+    *((unsigned int *) &buf[DUMP_TYPE]) = DUMP_TYPE_DELETED;
 
     /* better space management can be done here by deleting nodes when pid == (GetNumberOfPages()-1). */
     return WriteNode(pid, buf);
@@ -74,7 +75,7 @@ RC IX_IndexHandle::NewNode(const void *data, unsigned int &pid)
 	type = *((unsigned int *) &(buf[PF_PAGE_SIZE - 8]));
 
         /* found deleted node, [type id == 0], return the pid. */
-        if (type == 0)
+        if (type == DUMP_TYPE_DELETED)
         {
             /* write out new node. */
             if (WriteNode(i, data))
@@ -142,9 +143,9 @@ void IX_IndexHandle::DumpNodeTerse(const char *node, unsigned int pid)
 
 // moved to ix.h, but stays here for handy reference.
 //-/* used only for the dump routines. */
-//-#define DUMP_TYPE_DELETED (0)
+//-#define DUMP_TYPE_DATA (0)
 //-#define DUMP_TYPE_INDEX (1)
-//-#define DUMP_TYPE_DATA (2)
+//-#define DUMP_TYPE_DELETED (2)
 //-#define DUMP_NO_PID (0)
 //-
 //-
@@ -208,7 +209,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
     }
 
     // if a deleted node, we're done
-    if (type == 0)
+    if (type == DUMP_TYPE_DELETED)
         goto end;
     // }}}
 
