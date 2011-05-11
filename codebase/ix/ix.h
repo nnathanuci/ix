@@ -67,6 +67,7 @@ class IX_IndexHandle {
 
   /* node debugging utils. */
   void DumpNode(const char *node, unsigned int pid, unsigned int verbose);
+  void DumpNodeTerse(const char *node, unsigned int pid);
   RC DumpNode(unsigned int pid, unsigned int verbose);
 
  private:
