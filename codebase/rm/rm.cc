@@ -542,7 +542,7 @@ void RM::syscat_attr_to_tuple(const void *tuple, const string tableName, const A
 
 void RM::syscat_tuple_to_attr(const void *tuple, Attribute &attr, int &attr_pos) // {{{
 {
-        uint8_t attr_name[MAX_CAT_NAME_LEN];
+        uint8_t attr_name[MAX_CAT_NAME_LEN] = {0};
         uint8_t *tuple_ptr = (uint8_t *) tuple;
         int length;
 
@@ -555,7 +555,9 @@ void RM::syscat_tuple_to_attr(const void *tuple, Attribute &attr, int &attr_pos)
         memcpy(attr_name, tuple_ptr + sizeof(length), length);
         /* nil terminate so we can copy to a string. */
         attr_name[length] = '\0';
-        attr.name = (char *) attr_name;
+        //attr.name = (const char *) attr_name; /* safe operation, makes a copy of the string. */
+        //attr.name.insert(0, (char *) attr_name, length+1);
+        attr.name = string((char *) attr_name);
         tuple_ptr += sizeof(length) + length;
         
         /* read in the type info. */
