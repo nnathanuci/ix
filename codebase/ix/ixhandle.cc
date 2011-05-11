@@ -42,6 +42,15 @@ RC IX_IndexHandle::WriteNode(unsigned int pid, const void *data)
     return handle.WritePage(pid, data);
 }
 
+RC IX_IndexHandle::DeleteNode(unsigned int pid, const void *data)
+{
+    /* create a buffer of all 0. */
+    char buf[PF_PAGE_SIZE] = {0};
+
+    /* better space management can be done here by deleting nodes when pid == (GetNumberOfPages()-1). */
+    return WriteNode(pid, buf);
+}
+
 RC IX_IndexHandle::NewNode(const void *data, unsigned int &pid)
 {
     // old method (returns newly allocated node as the appended page.)
@@ -69,7 +78,7 @@ RC IX_IndexHandle::NewNode(const void *data, unsigned int &pid)
         if(type == 0)
         {
             /* write out new node. */
-            if(WriteNode(i, buf))
+            if(WriteNode(i, data))
                  return -1;
 
             /* return page id of new node. */
