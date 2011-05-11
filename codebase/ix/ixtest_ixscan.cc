@@ -53,7 +53,7 @@ string output_schema(string table_name, vector<Attribute> &attrs) // {{{
     return ss.str();
 } // }}}
 
-void ixTest_Insert(IX_Manager *ixmgr)
+void ixTest_Insert(IX_Manager *ixmgr) // {{{
 {
     RM *rm = RM::Instance();
     IX_IndexHandle handle;
@@ -106,9 +106,9 @@ void ixTest_Insert(IX_Manager *ixmgr)
     ZERO_ASSERT(rm->deleteTable(t1));
     cout << "PASS: deleteTable(" << t1 << ")" << endl;
     // }}}
-}
+} // }}}
 
-void ixTest_data_test1(IX_Manager *ixmgr)
+void ixTest_data_test1(IX_Manager *ixmgr) // {{{
 {
     RM *rm = RM::Instance();
     IX_IndexHandle handle;
@@ -119,10 +119,6 @@ void ixTest_data_test1(IX_Manager *ixmgr)
     data_test1_attrs.push_back((struct Attribute) { "a1", TypeInt, 0 });
     data_test1_attrs.push_back((struct Attribute) { "a2", TypeInt, 0 });
 
-
-    int key = 0;
-    RID rid = {0,0};
-    RID aux_rid;
 
     /* create table, create index, insert an entry, scan/retrieve entry, delete index, delete table. */ // {{{
     cout << "\n[ data_test1 ]" << endl;
@@ -136,46 +132,64 @@ void ixTest_data_test1(IX_Manager *ixmgr)
     cout << "PASS: OpenIndex(t1,a1,h)" << endl;
 
     assert(handle.GetNumberOfPages() == 1);
-    cout << "PASS: h.GetNumberOfPages == 1 [data_test1.a1 has root node]" << endl;
+    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
+
+    {
+        /* make the root node an occupied index node. */
+        unsigned int new_pid = 100;
+        char new_buf[PF_PAGE_SIZE] = {0};
+        // set the type to 1 (index node)
+        unsigned int type = 1; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
+        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
+        assert(new_pid == 0);
+        cout << "PASS: h1.NewNode(new_buf[type=1]) && new_pid == 0 [overwrite root node as occupied index node]" << endl;
+    }
 
     {
         /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
-        char data_buf[PF_PAGE_SIZE];
-        unsigned int data_pid;
+        char new_buf[PF_PAGE_SIZE];
+        unsigned int new_pid;
         unsigned int max_entries = (PF_PAGE_SIZE-20)/12; // (key, pageid, slotid)
         unsigned int offset = 0;
 
         for(int i=0; i<(int)max_entries; i++, offset += 12)
         {
-            (*((int *) &data_buf[i*12])) = i*10;
-            (*((unsigned int *) &data_buf[i*12+4])) = i*100;
-            (*((unsigned int *) &data_buf[i*12+8])) = i*1000;
+            (*((int *) &new_buf[i*12])) = i*10;
+            (*((unsigned int *) &new_buf[i*12+4])) = i*100;
+            (*((unsigned int *) &new_buf[i*12+8])) = i*1000;
         }
 
-        *((unsigned int *) &data_buf[PF_PAGE_SIZE-20]) = 0;
-        *((unsigned int *) &data_buf[PF_PAGE_SIZE-16]) = 0;
-        *((unsigned int *) &data_buf[PF_PAGE_SIZE-12]) = offset;
-        *((unsigned int *) &data_buf[PF_PAGE_SIZE-8]) = 2; // type data
-        *((unsigned int *) &data_buf[PF_PAGE_SIZE-4]) = max_entries; // num of entries
+        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0;
+        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0;
+        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
+        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = 2; // type data
+        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = max_entries; // num of entries
     
-        ZERO_ASSERT(handle.NewNode(data_buf, data_pid));
-        assert(data_pid == 0);
-        cout << "PASS: handle.NewNode([data]) && data_pid == 0" << endl;
-        handle.DumpNode(0, 0);
+        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
+        assert(new_pid == 1);
+        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
     }
 
-    //ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
-    //cout << "PASS: scan.OpenScan(h,=,1)" << endl;
+    {
+        int key = 90;
+        RID aux_rid = {0, 0};
 
-    //ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-    //assert(aux_rid.pageNum == 200 && aux_rid.slotNum == 3000);
-    //cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {200,3000}" << endl;
-    //
-    //assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-    //cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+        handle.DumpNode(1, 3);
 
-    //ZERO_ASSERT(scan.CloseScan());
-    //cout << "PASS: scan.CloseScan()" << endl;
+        /* equality test on key=20 */
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,=,20)" << endl;
+
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        assert(aux_rid.pageNum == 900 && aux_rid.slotNum == 9000);
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {900,9000}" << endl;
+        
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
 
     ZERO_ASSERT(ixmgr->DestroyIndex(data_test1, "a1"));
     cout << "PASS: DestroyIndex(data_test1,a1)" << endl;
@@ -183,7 +197,7 @@ void ixTest_data_test1(IX_Manager *ixmgr)
     ZERO_ASSERT(rm->deleteTable(data_test1));
     cout << "PASS: deleteTable(" << data_test1 << ")" << endl;
     // }}}
-}
+} // }}}
 
 int main() 
 {
