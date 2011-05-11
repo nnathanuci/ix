@@ -116,8 +116,5 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
 
 RC IX_Manager::CloseIndex(IX_IndexHandle &indexHandle)
 {
-    if(indexHandle.CloseFile())
-        return -1;
-
-    return 0;
+    return(indexHandle.CloseFile());
 }
