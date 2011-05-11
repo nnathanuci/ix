@@ -1,7 +1,7 @@
 
 include ../makefile.inc
 
-all: libix.a ixtest ixtest_ixmgr ixtest_ixscan
+all: libix.a ixtest ixtest_ixmgr ixtest_ixhandle ixtest_ixscan
 
 # lib file dependencies
 libix.a: libix.a(ix.o ixmgr.o ixhandle.o)  # and possibly other .o files
