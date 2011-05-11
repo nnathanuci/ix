@@ -137,6 +137,35 @@ RC IX_IndexHandle::DumpNode(unsigned int pid, unsigned int verbose)
     return 0;
 }
 
+void IX_IndexHandle::DumpNodeTerse(const char *node, unsigned int pid)
+{
+    unsigned int n_entries = DUMP_GET_NUM_ENTRIES(node);
+    unsigned int type = DUMP_GET_TYPE(node);
+    unsigned int left_pid = DUMP_GET_LEFT_PID(node);
+    unsigned int right_pid = DUMP_GET_RIGHT_PID(node);
+    unsigned int free_offset = DUMP_GET_FREE_OFFSET(node);
+    unsigned int free_space = DUMP_GET_FREE_SPACE(node);
+
+    if(type == DUMP_TYPE_DELETED)
+    {
+        cout << "[ pid:" << pid << " type:0 ]" << endl;
+        return;
+    }
+
+    cout << "[ ";
+    cout << "pid:" << pid << "  ";
+    cout << "type:" << type << "  ";
+    cout << "num_entries:" << n_entries << "  ";
+    cout << "free_off:" << free_offset << "  ";
+    cout << "space:" << free_space << "  ";
+    cout << "left:" << left_pid;
+
+    if(type == DUMP_TYPE_DATA)
+        cout << "  right:" << right_pid;
+
+    cout << " ]" << endl;
+}
+
 /* verbose=0 means off, verbose=1 means everything but entries, verbose>1 means dump all the entries. */
 void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int verbose)
 {
@@ -147,7 +176,13 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
     unsigned int free_offset = DUMP_GET_FREE_OFFSET(node);
     unsigned int free_space = DUMP_GET_FREE_SPACE(node);
     
-    if (verbose)
+    if (verbose == 0)
+    {
+        DumpNodeTerse(node, pid);
+        return;
+    }
+
+    if (verbose > 1)
     {
         if (attr.type == TypeInt)
             cout << "[ BEGIN node:int  (pid:" << pid << ") ]" << endl;
@@ -160,7 +195,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
         cout << "[ BEGIN node  (pid:" << pid << ") ]" << endl;
 
     /* dump type. */ // {{{
-    if (verbose)
+    if (verbose > 1)
     {
         if (type == DUMP_TYPE_DELETED)
             cout << "   type: deleted" << endl;
@@ -188,7 +223,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
     /* left/right child. */ // {{{
     if (type == DUMP_TYPE_INDEX)
     {
-        if(verbose)
+        if(verbose > 1)
             if(left_pid == DUMP_NO_PID)
                 cout << "   left child: " << "null" << endl;
             else
@@ -198,7 +233,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
     }
     else if (type == DUMP_TYPE_DATA)
     {
-        if(verbose)
+        if(verbose > 1)
         {
             if(left_pid == DUMP_NO_PID)
                 cout << "   left child: " << "null" << endl;
@@ -219,7 +254,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
     // }}}
 
     /* dump entries (index or data) */ // {{{
-    if (verbose > 1) 
+    if (verbose > 2) 
     {
         cout << endl;
 
@@ -232,7 +267,6 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
         {
             for(unsigned int i=0; i<n_entries; i++)
             {
-                /* determine the type when it comes time to print, assumne both for now. */
                 int k_int;
                 float k_float;
                 unsigned int page_id;
@@ -241,7 +275,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
                 // index entries are: key, page_id; data entries are: key, page_id, slot_id
                 unsigned int entry_size = (type == DUMP_TYPE_INDEX) ? (8) : (12);
 
-                /* fixed entry size is: 12 (key,page,slot) */
+                /* determine the type when it comes time to print, assume that key could be either int/float for now. */
                 k_int = *((int *) &node[entry_size*i]);
                 k_float = *((float *) &node[entry_size*i]);
                 page_id = *((unsigned int *) &node[entry_size*i+4]);
@@ -277,7 +311,7 @@ void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int v
     // }}}
 
 end:
-    if (verbose)
+    if (verbose > 1)
     {
         if (attr.type == TypeInt)
             cout << "[ END node:int  (pid:" << pid << ") ]" << endl;
