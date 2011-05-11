@@ -99,31 +99,6 @@ RC IX_IndexHandle::NewNode(const void *data, unsigned int &pid)
 }
 
 
-/* used only for the dump routines. */
-#define DUMP_TYPE_DELETED (0)
-#define DUMP_TYPE_INDEX (1)
-#define DUMP_TYPE_DATA (2)
-#define DUMP_NO_PID (0)
-
-
-/* header fields */
-#define DUMP_HEADER_START (PF_PAGE_SIZE - 20)
-#define DUMP_LEFT_PID (DUMP_HEADER_START+0)
-#define DUMP_RIGHT_PID (DUMP_HEADER_START+4)
-#define DUMP_FREE_OFFSET (DUMP_HEADER_START+8)
-#define DUMP_TYPE (DUMP_HEADER_START+12)
-#define DUMP_NUM_ENTRIES (DUMP_HEADER_START+16)
-
-/* macros to get the values. */
-#define DUMP_GET_LEFT_PID(buf_start) (*((unsigned int *) &((buf_start)[DUMP_LEFT_PID])))
-#define DUMP_GET_RIGHT_PID(buf_start) (*((unsigned int *) &((buf_start)[DUMP_RIGHT_PID])))
-#define DUMP_GET_FREE_OFFSET(buf_start) (*((unsigned int *) &((buf_start)[DUMP_FREE_OFFSET])))
-#define DUMP_GET_TYPE(buf_start) (*((unsigned int *) &((buf_start)[DUMP_TYPE])))
-#define DUMP_GET_NUM_ENTRIES(buf_start) (*((unsigned int *) &((buf_start)[DUMP_NUM_ENTRIES])))
-#define DUMP_GET_FREE_SPACE(buf_start) (DUMP_HEADER_START - DUMP_GET_FREE_OFFSET(buf_start))
-
-
-
 /* useful routines for outputting a node. */
 RC IX_IndexHandle::DumpNode(unsigned int pid, unsigned int verbose)
 {
@@ -165,6 +140,31 @@ void IX_IndexHandle::DumpNodeTerse(const char *node, unsigned int pid)
 
     cout << " ]" << endl;
 }
+
+
+// moved to ix.h, but stays here for handy reference.
+//-/* used only for the dump routines. */
+//-#define DUMP_TYPE_DELETED (0)
+//-#define DUMP_TYPE_INDEX (1)
+//-#define DUMP_TYPE_DATA (2)
+//-#define DUMP_NO_PID (0)
+//-
+//-
+//-/* header fields */
+//-#define DUMP_HEADER_START (PF_PAGE_SIZE - 20)
+//-#define DUMP_LEFT_PID (DUMP_HEADER_START+0)
+//-#define DUMP_RIGHT_PID (DUMP_HEADER_START+4)
+//-#define DUMP_FREE_OFFSET (DUMP_HEADER_START+8)
+//-#define DUMP_TYPE (DUMP_HEADER_START+12)
+//-#define DUMP_NUM_ENTRIES (DUMP_HEADER_START+16)
+//-
+//-/* macros to get the values. */
+//-#define DUMP_GET_LEFT_PID(buf_start) (*((unsigned int *) &((buf_start)[DUMP_LEFT_PID])))
+//-#define DUMP_GET_RIGHT_PID(buf_start) (*((unsigned int *) &((buf_start)[DUMP_RIGHT_PID])))
+//-#define DUMP_GET_FREE_OFFSET(buf_start) (*((unsigned int *) &((buf_start)[DUMP_FREE_OFFSET])))
+//-#define DUMP_GET_TYPE(buf_start) (*((unsigned int *) &((buf_start)[DUMP_TYPE])))
+//-#define DUMP_GET_NUM_ENTRIES(buf_start) (*((unsigned int *) &((buf_start)[DUMP_NUM_ENTRIES])))
+//-#define DUMP_GET_FREE_SPACE(buf_start) (DUMP_HEADER_START - DUMP_GET_FREE_OFFSET(buf_start))
 
 /* verbose=0 means off, verbose=1 means everything but entries, verbose>1 means dump all the entries. */
 void IX_IndexHandle::DumpNode(const char *node, unsigned int pid, unsigned int verbose)
