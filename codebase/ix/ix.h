@@ -9,6 +9,29 @@
 
 # define IX_EOF (-1)  // end of the index scan
 
+/* used only for the dump routines. */
+#define DUMP_TYPE_DELETED (0)
+#define DUMP_TYPE_INDEX (1)
+#define DUMP_TYPE_DATA (2)
+#define DUMP_NO_PID (0)
+
+
+/* header fields */
+#define DUMP_HEADER_START (PF_PAGE_SIZE - 20)
+#define DUMP_LEFT_PID (DUMP_HEADER_START+0)
+#define DUMP_RIGHT_PID (DUMP_HEADER_START+4)
+#define DUMP_FREE_OFFSET (DUMP_HEADER_START+8)
+#define DUMP_TYPE (DUMP_HEADER_START+12)
+#define DUMP_NUM_ENTRIES (DUMP_HEADER_START+16)
+
+/* macros to get the values. */
+#define DUMP_GET_LEFT_PID(buf_start) (*((unsigned int *) &((buf_start)[DUMP_LEFT_PID])))
+#define DUMP_GET_RIGHT_PID(buf_start) (*((unsigned int *) &((buf_start)[DUMP_RIGHT_PID])))
+#define DUMP_GET_FREE_OFFSET(buf_start) (*((unsigned int *) &((buf_start)[DUMP_FREE_OFFSET])))
+#define DUMP_GET_TYPE(buf_start) (*((unsigned int *) &((buf_start)[DUMP_TYPE])))
+#define DUMP_GET_NUM_ENTRIES(buf_start) (*((unsigned int *) &((buf_start)[DUMP_NUM_ENTRIES])))
+#define DUMP_GET_FREE_SPACE(buf_start) (DUMP_HEADER_START - DUMP_GET_FREE_OFFSET(buf_start))
+
 using namespace std;
 
 class IX_IndexHandle;
@@ -70,10 +93,11 @@ class IX_IndexHandle {
   void DumpNodeTerse(const char *node, unsigned int pid);
   RC DumpNode(unsigned int pid, unsigned int verbose);
 
+  Attribute attr;
+
  private:
   PF_Manager *pf;
   PF_FileHandle handle;
-  Attribute attr;
 };
 
 
@@ -87,8 +111,29 @@ class IX_IndexScan {
 	      CompOp      compOp,
 	      void        *value);           
 
+  RC OpenScan(const IX_IndexHandle &indexHandle, // Initialize index scan
+	      CompOp      compOp,
+	      void        *value, int anchor_pid);           
+
   RC GetNextEntry(RID &rid);  // Get next matching entry
+  RC GetNextEntryEQ(RID &rid);  // Get next matching entry
   RC CloseScan();             // Terminate index scan
+
+
+  IX_IndexHandle handle;
+  Attribute cond_attr;
+  CompOp op;
+  unsigned int start_pid;
+
+  int k_int;
+  float k_float;
+  char k_varchar[PF_PAGE_SIZE];
+  int k_len;
+
+  char last_node[PF_PAGE_SIZE];
+  unsigned int last_offset;
+  unsigned int last_entry;
+  unsigned int last_pid;
 };
 
 // print out the error message for a given return code
