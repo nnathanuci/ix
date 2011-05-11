@@ -1,0 +1,22 @@
+Table data is stored stored in heap files.
+
+- Each page in the heap is 4096 bytes (4KB) in size.
+
+- A page is either:
+  * a control page
+  * a data page
+
+- The space needed to address a page is 12 bits. When convenient we use 2 bytes instead.
+
+Control Pages:
+
+- A control page tells us the amount of unused space in a data page.
+
+- The format for a control page is as follows:
+  (unused_0, unused_1, unused_2, ..., unused_n)
+
+  * since we're representing every unused space as 2 bytes, a control page can have 2048 entries.
+
+  * everytime we do an insert/update/deleteTuple, the correct control page needs to be updated.
+
+  * arithmetic in rm.h explains how to determine given an absolute page id, which corresponding control page and index manages it.

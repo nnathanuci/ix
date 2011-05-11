@@ -1,0 +1,305 @@
+A data page needs to organize records by altering, moving, and relocating records.
+This must be done without modifying the Record IDs (page_num, slot_num).
+
+The Slotted Page Format will help deal with these issues.
+
+Note the following distinction between free vs. unused space:
+- free space refers to the amount of contiguous free space, after the records.
+- unused space refers to the amount of unused space regardless of fragmentation.
+
+Slotted Page Format:
+- The slotted page format has three classes of data that require management:
+  * records
+  * slot directory
+  * unused space
+
+- The slot directory has the following information:
+  * 2 bytes: offset to start of free space (2 bytes)
+  * 2 bytes: number of slots (2 bytes)
+
+  * For each slot:
+      2 bytes: offset to start of record
+
+- The slot directory grows from the end of the page towards the start of the page.
+
+- Initially the free space begins at the top of the page, at offset 0.
+
+- When a record is inserted, the following may occur:
+  1. There is enough free space for a new slot and the record.
+     Steps:
+       * Update slot count
+       * Insert slot
+       * Insert new record
+         - append to free space
+         - update free space offset
+       * Update unused space in control page.
+
+  2. There is not enough free space, but enough unused space for a new slot and record.
+     Steps:
+       * Compact page
+       * Update slot count
+       * Insert slot
+       * Insert new record
+       * Update unused space in control page.
+
+  3. There is not enough free or unused space:
+     This case shouldn't occur if inserts find the first page with available unused space in the control page.
+
+
+- When a record is altered, the following may occur:
+  1. Record size shrinks.
+     Steps:
+       - Determine record length, call it length.
+       - Determine number of slots, call it num_slots.
+       - Find the offset at the end of the directory.
+       - Calculate free space: end_directory - free_space_begin
+       - If record fits, append record, update slot directory.
+       - If record doesn't fit, compact page, append record, update slot directory.
+       - Update control page for unused space.
+
+  2. Record size grows. Enough free space available:
+     Steps:
+       - Move record inside free space, write fragment bytes to old space used by record.
+       - Update free space offset.
+       - Update slot directory.
+       - Update control page for unused space.
+
+  3. Record size grows. Not enough free space, but enough unused space.
+     Steps:
+       - Compact page
+       - Move record inside free space, write fragment bytes to old space used by record.
+       - Update free space offset.
+       - Update slot directory.
+       - Update control page for unused space.
+
+  4. Record size grows. Not enough free/unused space:
+     Steps:
+       - Get page with free space.
+       - Insert record in new page.
+       - Overwrite record in old page with a tuple redirect. Update unused space with fragment bytes.
+       - Update control page for unused space.
+
+- When a record is deleted:
+  - if slot is the last slot, delete the slot.
+  - if slot is not the last slot, set offset to 0x8000 (most significant bit is 1).
+  - update unused space in control page.
+
+Compaction Algorithm:
+
+Compacting is difficult and expensive computationally.
+
+1. Construct a list of (slot_id, offset) tuples.
+2. Sort on the offset field.
+3. The list will now be a sorted arrangement of the original list.
+4. Adjacent (slot_id, offset) tuple, correspond to the right-adjacency.
+5. Compact all adjacent records, tuple redirects, etc.
+6. Rewrite all the offsets.
+
+Alternative 1:
+  * Requires each unused fragment to have at least 2 bytes.
+    - Tricky case for altered records of -1 bytes.
+    - Use linear search or hash table (key=offset) on the slot directory.
+      
+  * Stores the amount of free space in the fragment.
+
+  * To indicate the free space, mask the first 4 bits.
+
+  * e.g. If there's 512 bytes space in the fragment:
+         int16_t *fragment = (int16_t *) fragment_ptr; // cast as 16-bit int
+         *fragment = 0xF0 | 512
+
+         Check if it's a fragment:
+         int16_t *check = record + record_length;
+         if((*check & 0xF0) == 0xF0) // then it's an unused fragment
+
+  * By masking the first 4 bits, it's easy to tell if there's an adjacent
+    record, tuple redirection, or unused space fragment.
+
+  * Problem: We cannot determine the adjacent record in the slot.
+             - See Alternative 2 for solution.
+
+Alternative 2:
+  * Same premise as alternative 1, but instead store the slot number
+    of the adjacent record (in the direction of end of page).
+
+  * Solves problem of identifying the adjacent record and slot.
+
+  * Problem: Cannot identify the adjacent slot number if the packing is
+             already contiguous?
+
+  * Solution: A partial solution is to skip contiguous records. The fragments
+              are only a concern for records adjacent to the end of a fragment.
+
+              However altering a record might require compaction of adjacent
+              records, and in such case, it might be easy to pay the cost of
+              a linear scan to identify the slot.
+
+Slot Directory Management:
+  * Definitions:
+    - slot:          a slot stores an address value.
+
+    - active slot:   a slot that stores an address of a record on the page.
+
+    - inactive slot: a slot that has no associated record. (value is always > 4096)
+
+    - free space:    the amount of contiguous space from the last record appearing
+                     on the page to the beginning of the last slot in the directory.
+
+    - fragment:      a fragment is space that is unused, but precedes a record on the
+                     page.
+
+    - slot queue:    a slot queue is an implicit FIFO queue, implemented as a linked list,
+                     where inactive slots are used as elements.
+
+  * A slot directory has the following control information:
+    - free_space: stores the address where records can be appended.
+                  Initially 0.
+
+    - next_slot:  stores the first element in the slot queue.
+                  Initially 0, for slot index 0.
+
+    - num_slots:  stores the number of slots, regardless if they're active or inactive.
+                  Initially 1, for slot index 0.
+
+    - slot 0: originally inactive, and stores 4095.
+
+  * control information address:
+    - We consider the page as the array: uint16_t page[2048] which is equal to 4096 bytes.
+      - uint16_t free_space = page[2047]
+      - uint16_t next_slot = page[2046]
+      - uint16_t num_slots = page[2045]
+
+      - uint16_t slot0 = page[2044] /* not control information, just showing where slot 0 is stored. */
+       
+
+  * an active slot stores an offset < free_space.
+
+  * an inactive slot stores: 4096 + next_slot_id, where next_slot_id is the next slot index in the slot queue.
+    - the value 4096 is an invalid address (this is equivalent to setting the 13th bit)
+    - the last slot in the slot queue, stores 4095 to represent the tail element of the slot queue.
+
+  * The slot directory expansion procedure:
+    - slot expansion occurs only after a record is inserted, and the slot queue becomes empty.
+    - procedure:
+      - next_slot = 4096 + num_slots
+      - increment next_slot
+      - increase the space of the page by 2
+
+  * The slot directory collapse procedure:
+    - slot directory collapse occurs only when the following criteria is met:
+      - a record is deleted and occupies the last slot
+      - there exists one or more preceding slots from the last slot that are empty
+
+    - A picture where this criteria holds:
+        [L] [X] [X] [A] [A] [A] [N=6] [Next=(4,3)] [Free=...]
+         5   4   3   2   1   0
+        Legend: L = last slot, X = inactive slot, A = active slot, N = number of slots
+
+    - A picture where the criteria above doesn't hold:
+        [L] [A] [X] [A] [X] [X] [N=6] [Next=(0,3,1)] [Free=...]
+         5   4   3   2   1   0 
+    - procedure (only in the case a collapse is required):
+      - delete record in last slot, call last slot index last_slot.
+      - walk backwards to find the last active slot, determine it's slot number, call it last_A
+      - if one or more inactive slots between last active slot and the last slot:
+        (last_slot - last_A) > 1 [this means theres one slot inbetween last active and last slot]
+        - for (i = last_slot-1, i > (last_A+1), i++) /* we ignore last_slot and (last_A+1) */
+             delete i from slot queue
+      - update num_slots = (last_A + 1)+1
+      - slot[num_slots-1] = 4095 /* effectively make the last slot in the directory inactive, pointing to a non-existent slot. */
+      - decrease the space of the page by 2*(last_slot - (last_A+1))
+
+      - Deleting from the slot queue might only involve one list traversal to delete multiple items.
+        Just put a filter on the last usable slot index. 
+
+Fragment/Free Space Management:
+  Definitions (recall from above:
+    - free space:    the amount of contiguous space from the last record appearing
+                     on the page to the beginning of the last slot in the directory.
+
+    - fragment:      a fragment is space that is unused, but precedes a record on the
+                     page.
+
+  * Fragments are contiguous bytes of space unused by records. They only appear before the free space.
+    - A few pictures where this holds:
+
+      Consider the page layout as a sequence of bytes:
+
+      [FFFF] [RRRRRRR] [F] [RRRR] [FF] [RRRRRR] [XXXXXXXXXXXX] [Slot Directory/Control Data]
+
+      [RRR] [FF] [RRRR] [FFFff] [RRRRR] [RRRRR] [XXXXXXXX] [Slot Directory/Control Data]
+
+      Legend: F = fragment bytes, R = Record data, X = free space
+
+    - A picture of a compacted database: 
+
+      [RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR] [XXXXXXXXXXXXXXXXXXX] [Slot Directory/Control Data]
+      
+  * Fragments are created as a side effect of deleting and altering records.
+
+  * Fragments are removed when a page is compacted.
+
+  * When there are no fragments, the page is in compacted form.
+
+  * Procedure for creating a fragment after deleting a record:
+    - Given RID of record to delete, read the slot and determine the offset (call it start_offset).
+    - read the field count/tuple redirection header:
+        - for tuple redirection: recursively delete using RID in the redirection.
+
+    - determine the end offset of the tuple redirect / record (call it end_offset).
+      - if end_offset == free_space, then set free_space = start_offset.
+        mark slot inactive, and update slot queue. We're done.
+
+    - fill the redirection data/record with bytes 0x80:
+      - memset(start_offset, 0x80, (end_offset - start_offset))
+        or: for(i=start_offset; i < end_offset; i++) page[i] = 0x80;
+
+    - update the slot directory by marking slot inactive and any additional management (collapsing).
+
+  * If a record is altered causing a decrease in size, mark the fragmented space if the record precedes
+    the last record on the page.
+
+  * Compaction procedure:
+    - two offsets: left_offset and right_offset
+
+    - create a hash table: uint16_t offset_to_slot_map[PF_PAGE_SIZE/2]
+
+    - use the hash function: h(k) = (k/2).
+
+      This works because the minimum distance between beginning record offsets of two distinct records
+      must be greater than the size of the record directory and 1 data byte.
+
+      This results in the minimum distance between two record offsets being 5.
+
+      Therefore two records with distinct beginning offsets cannot collide using the above hash function.
+              
+    - read in the slot directory, iterate over the active slots, populate hash table.
+        for each slot_id, offset:
+          offset_to_slot_map[h(offset)] = slot_id  /* h(offset) = offset/2 */
+
+   
+    * compaction phase:
+
+    - left_offset = right_offset = 0
+
+    - scan using right_offset skipping all bytes that equal 0x80.
+
+    - The first byte you encounter that is not equal to 0x80 will give us information to identify if it's a record or tuple redirect:
+      - the first byte will be >= 64 if it's a tuple redirect.
+      - the first byte will be <= 15 if it's a record.
+        This is because the last 4 bits maybe occupied by the first byte of the field offset.
+        A picture of the field offset bytes:
+        [L] [R] expands to bits: [L7 L6 L5 L4 L3 L2 L1 L0] [R7 R6 R5 R4 R3 R2 R1 R0]
+                                               X  X  X  X    X  X  X  X  X  X  X  X
+
+                                 Legend: bits marked with X indicate bits used by the field count.
+
+    - Map the offset to a slot id: slot = offset_to_slot[h(right_offset)]
+
+    - create an auxillary offset: aux_offset = right_offset + record_length, this points to end of the record.
+
+    - if aux_offset == free_space, then  move the record and update the free_space to: left_offset + rec_length
+
+    - move the record (probably use memcpy(left_offset, right_offset, record_length)
+
+    - scan and repeat for more fragments.
