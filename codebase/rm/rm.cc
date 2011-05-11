@@ -555,7 +555,8 @@ void RM::syscat_tuple_to_attr(const void *tuple, Attribute &attr, int &attr_pos)
         memcpy(attr_name, tuple_ptr + sizeof(length), length);
         /* nil terminate so we can copy to a string. */
         attr_name[length] = '\0';
-        //attr.name = (const char *) attr_name; /* safe operation, makes a copy of the string. */
+        /* copies that don't work? */
+        //attr.name = (const char *) attr_name;
         //attr.name.insert(0, (char *) attr_name, length+1);
         attr.name = string((char *) attr_name);
         tuple_ptr += sizeof(length) + length;
