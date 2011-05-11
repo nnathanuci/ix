@@ -8,8 +8,6 @@ IX_IndexHandle::IX_IndexHandle()
 
 IX_IndexHandle::~IX_IndexHandle()
 {
-    /* ignore errors, we don't care if it's not already open. */
-    handle.CloseFile();
 }
 
 RC IX_IndexHandle::OpenFile(const char *fileName, Attribute &a)
