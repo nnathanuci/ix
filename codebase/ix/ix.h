@@ -65,6 +65,10 @@ class IX_IndexHandle {
   */
   RC NewNode(const void *data, unsigned int &pid);
 
+  /* node debugging utils. */
+  void DumpNode(const char *node, unsigned int pid, unsigned int verbose);
+  RC DumpNode(unsigned int pid, unsigned int verbose);
+
  private:
   PF_Manager *pf;
   PF_FileHandle handle;
