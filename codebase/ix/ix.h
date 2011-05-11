@@ -59,8 +59,10 @@ class IX_IndexHandle {
   RC ReadNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
   RC WriteNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
 
-  /* rather than create a new node, can scan the file for a node with free space, and only if necessary create a new page. */
-  RC NewNode(const void *data) { return handle.AppendPage(data); }
+  /* for now, NewNode appends all created nodes to the end of the page file. It returns by reference the pid.
+     (this will later be refactored to scan for the next available free node, and return that pid instead.)
+  */
+  RC NewNode(const void *data, unsigned int &pid) { { if(handle.AppendPage(data)) return -1; } pid = GetNumberOfPages()-1; return 0; }
 
  private:
   PF_Manager *pf;
