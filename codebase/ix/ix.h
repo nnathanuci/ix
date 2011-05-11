@@ -58,6 +58,7 @@ class IX_IndexHandle {
   unsigned GetNumberOfPages();
   RC ReadNode(unsigned int pid, const void *data);
   RC WriteNode(unsigned int pid, const void *data);
+  RC DeleteNode(unsigned int pid, const void *data);
 
   /* for now, NewNode appends all created nodes to the end of the page file. It returns by reference the pid.
      (this will later be refactored to scan for the next available free node, and return that pid instead.)
