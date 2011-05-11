@@ -39,8 +39,8 @@ class IX_Manager {
 
 class IX_IndexHandle {
  public:
-  IX_IndexHandle  () { pf = PF_Manager::Instance(); } // Constructor
-  ~IX_IndexHandle () { }                          // Destructor
+  IX_IndexHandle  (); // Constructor
+  ~IX_IndexHandle (); // Destructor
 
   // The following two functions are using the following format for the passed key value.
   //  1) data is a concatenation of values of the attributes
@@ -53,16 +53,16 @@ class IX_IndexHandle {
   /* RC WriteNode(int id, void *data); */
   /* RC ReadNode(int id, void *data); */
 
-  RC OpenFile(const char *fileName, Attribute &a) { { if(pf->OpenFile(fileName, handle)) return -1; } attr = a; return 0; }
-  RC CloseFile() { { if(pf->CloseFile(handle)) return -1; } return 0; }
-  unsigned GetNumberOfPages() { return handle.GetNumberOfPages(); }
-  RC ReadNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
-  RC WriteNode(unsigned int pid, const void *data) { return handle.WritePage(pid, data); }
+  RC OpenFile(const char *fileName, Attribute &a);
+  RC CloseFile();
+  unsigned GetNumberOfPages();
+  RC ReadNode(unsigned int pid, const void *data);
+  RC WriteNode(unsigned int pid, const void *data);
 
   /* for now, NewNode appends all created nodes to the end of the page file. It returns by reference the pid.
      (this will later be refactored to scan for the next available free node, and return that pid instead.)
   */
-  RC NewNode(const void *data, unsigned int &pid) { { if(handle.AppendPage(data)) return -1; } pid = GetNumberOfPages()-1; return 0; }
+  RC NewNode(const void *data, unsigned int &pid);
 
  private:
   PF_Manager *pf;
@@ -87,6 +87,5 @@ class IX_IndexScan {
 
 // print out the error message for a given return code
 void IX_PrintError (RC rc);
-
 
 #endif

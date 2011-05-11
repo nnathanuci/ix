@@ -4,12 +4,14 @@ include ../makefile.inc
 all: libix.a ixtest ixtest_ixmgr ixtest_ixscan
 
 # lib file dependencies
-libix.a: libix.a(ix.o ixmgr.o)  # and possibly other .o files
+libix.a: libix.a(ix.o ixmgr.o ixhandle.o)  # and possibly other .o files
 
 # c file dependencies
 ix.o: ix.h
 
 ixmgr.o: ix.h
+
+ixhandle.o: ix.h
 
 ixtest.o: ix.h
 
@@ -19,6 +21,8 @@ ixtest: ixtest.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 ixtest_ixmgr: ixtest_ixmgr.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 
 ixtest_ixscan: ixtest_ixscan.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
+
+ixtest_ixhandle: ixtest_ixhandle.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 
 # dependencies to compile used libraries
 .PHONY: $(CODEROOT)/pf/libpf.a

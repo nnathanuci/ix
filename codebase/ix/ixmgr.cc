@@ -1,4 +1,5 @@
 #include "ix.h"
+#include <cassert>
 
 // class IX_Manager {
 //  public:
@@ -85,6 +86,7 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
     Attribute attr;
     uint16_t attr_pos;
     PF_FileHandle handle;
+    unsigned int pid;
 
     /* open table. */
     if (rm->openTable(tableName, handle))
@@ -102,8 +104,11 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
     if (indexHandle.GetNumberOfPages() == 0)
     {
         char root_node[PF_PAGE_SIZE] = {0};
-        if(indexHandle.NewNode(root_node))
+        if(indexHandle.NewNode(root_node, pid))
             return -1;
+
+        /* ensure the root node begins at pid 0. */
+        assert(pid == 0);
     }
 
     return 0;
