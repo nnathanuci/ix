@@ -15,21 +15,24 @@
 //};
 
 
-IX_IndexScan::IX_IndexScan()
+IX_IndexScan::IX_IndexScan() // {{{
 {
-}
+} // }}}
 
-IX_IndexScan::~IX_IndexScan()
+IX_IndexScan::~IX_IndexScan() // {{{
 {
-}
+} // }}}
 
-RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void *value)
+RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void *value) // {{{
 {
+    /* find which data node has the key. */
+
+    /* return OpenScan(indexHandle, compOp, value, data_page_id) */
     return -1;
-}
+} // }}}
 
 
-/* a test verson, where we assume search(key) yields anchor_pid the first data node. */
+/* a test verson, where we assume search(key) yields anchor_pid the first data node. */ // {{{
 RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void *value, int anchor_pid)
 {
     handle = indexHandle;
@@ -66,18 +69,18 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
     }
 
     return 0;
-}
+} // }}}
 
-RC IX_IndexScan::GetNextEntry(RID &rid)  // Get next matching entry
+RC IX_IndexScan::GetNextEntry(RID &rid) // {{{
 {
     if (op == EQ_OP)
         return GetNextEntryEQ(rid);
 
     /* 1 since -1 is IX_EOF. */
     return 1;
-}
+} // }}}
 
-RC IX_IndexScan::GetNextEntryEQ(RID &rid)  // Get next matching entry
+RC IX_IndexScan::GetNextEntryEQ(RID &rid) // {{{
 {
     unsigned int n_entries;
     unsigned int type;
@@ -137,6 +140,27 @@ RC IX_IndexScan::GetNextEntryEQ(RID &rid)  // Get next matching entry
         }
         else if (cond_attr.type == TypeReal)
         {
+           if (k_float == *((float *) &last_node[last_node_next*12]))
+           {
+               /* found match. */
+               rid.pageNum = *((unsigned int *) &last_node[last_node_next*12 + 4]);
+               rid.slotNum = *((unsigned int *) &last_node[last_node_next*12 + 8]);
+
+               /* increment so we check the entry on next call. */
+               last_node_next++;
+               n_matches++;
+
+               return 0;
+           }
+           else if (k_float < *((float *) &last_node[last_node_next*12]))
+           {
+               /* won't find a match now, all keys are now larger. */
+               return IX_EOF;
+           }
+           else /* k_float < last_node_next */
+           {
+               last_node_next++;
+           }
         }
         else if (cond_attr.type == TypeVarChar)
         {
@@ -145,15 +169,11 @@ RC IX_IndexScan::GetNextEntryEQ(RID &rid)  // Get next matching entry
         }
     }
     
-    /* searched the node and found no matches, the key won't be here then, special case for duplicates. */
-    if(n_matches == 0 && start_pid == last_node_pid)
-        return IX_EOF;
-
     /* not found among the entries. */
     return IX_EOF;
-}
+} // }}}
 
-RC IX_IndexScan::CloseScan()             // Terminate index scan
+RC IX_IndexScan::CloseScan() // {{{
 {
     op = NO_OP;
     start_pid = 0;
@@ -165,4 +185,4 @@ RC IX_IndexScan::CloseScan()             // Terminate index scan
     cond_attr.name = "";
 
     return 0;
-}
+} // }}}
