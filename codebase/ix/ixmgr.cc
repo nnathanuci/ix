@@ -103,8 +103,11 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
     /* create root node if doesn't exist already. */
     if (indexHandle.GetNumberOfPages() == 0)
     {
-        char root_node[PF_PAGE_SIZE] = {0};
-        if(indexHandle.NewNode(root_node, pid))
+        char buf[PF_PAGE_SIZE] = {0};
+        *((unsigned int *) &buf[DUMP_TYPE]) = DUMP_TYPE_DELETED;
+
+        
+        if(indexHandle.NewNode(buf, pid))
             return -1;
 
         /* ensure the root node begins at pid 0. */
