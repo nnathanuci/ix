@@ -79,6 +79,7 @@ void ixTest_NewNode(IX_Manager *ixmgr)
     cout << "PASS: h1.GetNumberOfPages == 1 [root node]" << endl;
 
     memset(new_buf, 0, PF_PAGE_SIZE);
+    type = DUMP_TYPE_DELETED; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
     ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
     assert(new_pid == 0);
     cout << "PASS: h1.NewNode([0*4096],new_pid) && new_pid==0 [new node replaced root node]" << endl;
@@ -108,12 +109,12 @@ void ixTest_NewNode(IX_Manager *ixmgr)
     cout << "PASS: h1.GetNumberOfPages == 1 [root node]" << endl;
 
     memset(new_buf, 0, PF_PAGE_SIZE);
-    // set the type to 1 (index node)
-    type = 1; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
+    type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
     ZERO_ASSERT(ix_handle1.WriteNode(0, new_buf));
     cout << "PASS: h1.WriteNode(0, new_buf[type=1]) [overwrite root node]" << endl;
 
     memset(new_buf, 0, PF_PAGE_SIZE);
+    type = DUMP_TYPE_DELETED; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
     ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
     assert(new_pid == 1);
     cout << "PASS: h1.NewNode([0*4096],new_pid) && new_pid==1 [new node appended]" << endl;
@@ -147,8 +148,7 @@ void ixTest_NewNode(IX_Manager *ixmgr)
         for (unsigned int i = 0; i < 10; i++)
         {
             memset(new_buf, 0, PF_PAGE_SIZE);
-            // set the type to 1 (index node)
-            type = 1; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
+            type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
             ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
             /* new nodes should start at pid 0 and increase, since they're occupied. */
             assert(new_pid == i);
@@ -169,8 +169,7 @@ void ixTest_NewNode(IX_Manager *ixmgr)
 
         /* reallocate nodes 4, 5, 7 */
         memset(new_buf, 0, PF_PAGE_SIZE);
-        // set the type to 1 (index node)
-        type = 1; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
+        type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
 
         ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
         assert(new_pid == 4);
@@ -186,7 +185,7 @@ void ixTest_NewNode(IX_Manager *ixmgr)
     {
         /* new nodes 10, 11 */
         memset(new_buf, 0, PF_PAGE_SIZE);
-        type = 1; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
+        type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
         ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
         assert(new_pid == 10);
         cout << "PASS: h1.NewNode([type=1]) && new_pid == 10" << endl;
