@@ -74,7 +74,7 @@ RC IX_IndexHandle::NewNode(const void *data, unsigned int &pid)
         /* check if the node is deleted. */
 	type = *((unsigned int *) &(buf[PF_PAGE_SIZE - 8]));
 
-        /* found deleted node, [type id == 0], return the pid. */
+        /* found deleted node, return the pid. */
         if (type == DUMP_TYPE_DELETED)
         {
             /* write out new node. */
