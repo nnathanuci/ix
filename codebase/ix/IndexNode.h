@@ -9,6 +9,7 @@
 
 #include <string.h>
 
+#define PF_PAGE_SIZE (4096)
 #define ENTRY_TRAILER_START	(PF_PAGE_SIZE - 20)
 #define MAX_ENTRIES 		((PF_PAGE_SIZE - 20)/4)
 #define TYPE_DATA			(0)
