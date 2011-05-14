@@ -139,6 +139,8 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     }
 
     {
+        /* XXX: create & convert to shuffled array for values 0 to 338. */
+
         /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
         char new_buf[PF_PAGE_SIZE];
         unsigned int new_pid;
@@ -217,6 +219,8 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     }
 
     {
+        /* XXX: create & convert to shuffled array for values 0 to 338. */
+
         /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
         char new_buf[PF_PAGE_SIZE];
         unsigned int new_pid;
@@ -307,6 +311,8 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     }
 
     {
+        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+
         /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
         char new_buf[PF_PAGE_SIZE];
         unsigned int new_pid;
@@ -385,6 +391,8 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     }
 
     {
+        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry. Use hashmap to determine if a duplicate. */
+
         /* create a data node (339 entries): [ (0,0,0) (0,1,1) (10,100,1000) (10,101,1001)... (3380, 33801, 338001) ] */
         char new_buf[PF_PAGE_SIZE];
         unsigned int new_pid;
