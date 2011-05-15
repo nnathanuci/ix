@@ -129,40 +129,18 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* make the root node an occupied index node. */
-        unsigned int new_pid = 100;
-        char new_buf[PF_PAGE_SIZE] = {0};
-        unsigned int type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 0);
-        cout << "PASS: h1.NewNode(new_buf[type=1]) && new_pid == 0 [overwrite root node as occupied index node]" << endl;
-    }
-
-    {
-        /* XXX: create & convert to shuffled array for values 0 to 338. */
-
-        /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
-        char new_buf[PF_PAGE_SIZE];
-        unsigned int new_pid;
         unsigned int max_entries = (PF_PAGE_SIZE-20)/12; // (key, pageid, slotid)
-        unsigned int offset = 0;
 
-        for(int i=0; i<(int)max_entries; i++, offset += 12)
+        /* XXX: shuffle for more accurate testing. */
+        for(int i=0; i<(int)max_entries; i++)
         {
-            (*((int *) &new_buf[i*12])) = i*10;
-            (*((unsigned int *) &new_buf[i*12+4])) = i*100;
-            (*((unsigned int *) &new_buf[i*12+8])) = i*1000;
-        }
+            int k = i*10;
+            struct RID r = {i*100, i*1000};
 
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = max_entries; // num of entries
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
+        }
     
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 1);
-        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
+        cout << "PASS: handle.InsertEntries([0,10,...,3380],[(0,0),(100,1000),...,(33800,338000)])" << endl;
     }
 
     {
@@ -209,47 +187,25 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* make the root node an occupied index node. */
-        unsigned int new_pid = 100;
-        char new_buf[PF_PAGE_SIZE] = {0};
-        unsigned int type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 0);
-        cout << "PASS: h1.NewNode(new_buf[type=1]) && new_pid == 0 [overwrite root node as occupied index node]" << endl;
-    }
-
-    {
-        /* XXX: create & convert to shuffled array for values 0 to 338. */
-
-        /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
-        char new_buf[PF_PAGE_SIZE];
-        unsigned int new_pid;
+        /* XXX: shuffle for better testing. */
         unsigned int max_entries = (PF_PAGE_SIZE-20)/12; // (key, pageid, slotid)
-        unsigned int offset = 0;
 
-        for(int i=0; i<(int)max_entries; i++, offset += 12)
+        for(int i=0; i<(int)max_entries; i++)
         {
-            (*((int *) &new_buf[i*12])) = i*10;
-            (*((unsigned int *) &new_buf[i*12+4])) = i*100;
-            (*((unsigned int *) &new_buf[i*12+8])) = i*1000;
+            int k = i*10;
+            struct RID r = {i*100, i*1000};
+
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = max_entries; // num of entries
-    
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 1);
-        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
+        cout << "PASS: handle.InsertEntries([0,10,...,3380],[(0,0),(100,1000),...,(33800,338000)])" << endl;
     }
 
     {
         int key = 25;
         RID aux_rid = {0, 0};
 
-        /* equality test on key=20 */
+        /* equality test on key=25 */
         ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
@@ -265,7 +221,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
         unsigned int max_entries = (PF_PAGE_SIZE-20)/12; // (key, pageid, slotid)
         int key = max_entries*10; /* shouldn't exist. */
 
-        /* equality test on key=20 */
+        /* equality test on key=3390 */
         ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
@@ -301,40 +257,20 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* make the root node an occupied index node. */
-        unsigned int new_pid = 100;
-        char new_buf[PF_PAGE_SIZE] = {0};
-        unsigned int type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 0);
-        cout << "PASS: h1.NewNode(new_buf[type=1]) && new_pid == 0 [overwrite root node as occupied index node]" << endl;
-    }
-
-    {
         /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
 
         /* create a data node (339 entries): [ (0,0,0) (10,100,1000) (20,200,2000) ... (3380, 33800, 338000) ] */
-        char new_buf[PF_PAGE_SIZE];
-        unsigned int new_pid;
         unsigned int max_entries = (PF_PAGE_SIZE-20)/12; // (key, pageid, slotid)
-        unsigned int offset = 0;
 
-        for(int i=0; i<(int)max_entries; i++, offset += 12)
+        for(int i=0; i<(int)max_entries; i++)
         {
-            (*((int *) &new_buf[i*12])) = i*10;
-            (*((unsigned int *) &new_buf[i*12+4])) = i*100;
-            (*((unsigned int *) &new_buf[i*12+8])) = i*1000;
+            int k = i*10;
+            struct RID r = {i*100, i*1000};
+
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = max_entries; // num of entries
-    
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 1);
-        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
+        cout << "PASS: handle.InsertEntries([0,10,...,3380],[(0,0),(100,1000),...,(33800,338000)])" << endl;
     }
 
     {
@@ -381,49 +317,26 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* make the root node an occupied index node. */
-        unsigned int new_pid = 100;
-        char new_buf[PF_PAGE_SIZE] = {0};
-        unsigned int type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 0);
-        cout << "PASS: h1.NewNode(new_buf[type=1]) && new_pid == 0 [overwrite root node as occupied index node]" << endl;
-    }
-
-    {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry. Use hashmap to determine if a duplicate. */
-
-        /* create a data node (339 entries): [ (0,0,0) (0,1,1) (10,100,1000) (10,101,1001)... (3380, 33801, 338001) ] */
-        char new_buf[PF_PAGE_SIZE];
-        unsigned int new_pid;
         unsigned int max_entries = (PF_PAGE_SIZE-20)/12; // (key, pageid, slotid)
-        unsigned int offset = 0;
 
         for(int i=0; i<(int)max_entries; i+=2)
         {
-            (*((int *) &new_buf[i*12])) = i*10;
-            (*((unsigned int *) &new_buf[i*12+4])) = i*100;
-            (*((unsigned int *) &new_buf[i*12+8])) = i*1000;
+            int k = i*10;
+            struct RID r = {i*100, i*1000};
+
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
 
             /* create a second copy of the key [note the post increment is +2]. */
             if ((i+1) < (int) max_entries)
             {
-                (*((int *) &new_buf[(i+1)*12])) = i*10;
-                (*((unsigned int *) &new_buf[(i+1)*12+4])) = i*100 + 1;
-                (*((unsigned int *) &new_buf[(i+1)*12+8])) = i*1000 + 1;
+                int k = i*10;
+                struct RID r = {i*100 + 1, i*1000 + 1};
+
+                ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        offset = max_entries*12;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
-        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = max_entries; // num of entries
-    
-        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-        assert(new_pid == 1);
-        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
+        cout << "PASS: handle.InsertEntries([0,20,...,3380],[(0,0),(200,2000),(201,2001)...,(33800,338000)])" << endl;
     }
 
     {
