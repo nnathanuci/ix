@@ -148,7 +148,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
         RID aux_rid = {0, 0};
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid));
@@ -206,7 +206,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
         RID aux_rid = {0, 0};
 
         /* equality test on key=25 */
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -222,7 +222,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
         int key = max_entries*10; /* shouldn't exist. */
 
         /* equality test on key=3390 */
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -278,7 +278,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
         RID aux_rid = {0, 0};
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid));
@@ -345,7 +345,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
         int key = 0;
         RID aux_rid = {0, 0};
 
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid));
@@ -364,7 +364,7 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
 
         key = 80;
 
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
         cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid));
