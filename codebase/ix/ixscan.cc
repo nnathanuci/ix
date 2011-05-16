@@ -583,7 +583,6 @@ RC IX_IndexScan::GetNextEntryLE(RID &rid) // {{{
             return 1;
 
         last_node_pid = next_pid;
-        last_node_next = n_entries-1; /* scanning right to left. */
     }
 
     /* collect all metadata from the node. */
@@ -594,6 +593,10 @@ RC IX_IndexScan::GetNextEntryLE(RID &rid) // {{{
         right_pid = DUMP_GET_RIGHT_PID(last_node);
         free_offset = DUMP_GET_FREE_OFFSET(last_node);
         free_space = DUMP_GET_FREE_SPACE(last_node);
+
+        /* since scanning right to left, we need to read in n_entries first) */
+        if (last_node_next == PF_PAGE_SIZE)
+            last_node_next = n_entries-1; /* scanning right to left. */
     }
 
     /* scan the node until we find a match. */
