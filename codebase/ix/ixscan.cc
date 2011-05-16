@@ -258,9 +258,9 @@ RC IX_IndexScan::GetNextEntryNE(RID &rid) // {{{
     }
 
     /* right sibling exists */
-    if(right_pid > 0)
+    if(right_pid != 0)
     {
-        last_node_next == PF_PAGE_SIZE; // reset the next offset (triggers reading in new node)
+        last_node_next = PF_PAGE_SIZE; // reset the next offset (triggers reading in new node)
         next_pid = right_pid;
         return GetNextEntryNE(rid);
     }
