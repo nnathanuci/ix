@@ -82,6 +82,9 @@ RC IX_IndexScan::GetNextEntry(RID &rid) // {{{
     if (op == NE_OP)
         return GetNextEntryNE(rid);
 
+    if (op == GT_OP)
+        return GetNextEntryGT(rid);
+
     /* 1 since -1 is IX_EOF. */
     return 1;
 } // }}}
@@ -263,6 +266,96 @@ RC IX_IndexScan::GetNextEntryNE(RID &rid) // {{{
         last_node_next = PF_PAGE_SIZE; // reset the next offset (triggers reading in new node)
         next_pid = right_pid;
         return GetNextEntryNE(rid);
+    }
+
+    /* finished scan, no more siblings to be read. */
+    return IX_EOF;
+} // }}}
+
+RC IX_IndexScan::GetNextEntryGT(RID &rid) // {{{
+{
+    unsigned int n_entries;
+    unsigned int type;
+    unsigned int left_pid;
+    unsigned int right_pid;
+    unsigned int free_offset;
+    unsigned int free_space;
+
+    /* if the next entry is invalid, then read in new node. */
+    if(last_node_next == PF_PAGE_SIZE)
+    {
+        /* read in the node, it will persist in the structure, so only needs to be done once. */
+        if(handle.ReadNode(next_pid, last_node))
+            return 1;
+
+        last_node_pid = next_pid;
+        last_node_next = 0;
+    }
+
+    /* collect all metadata from the node. */
+    {
+        n_entries = DUMP_GET_NUM_ENTRIES(last_node);
+        type = DUMP_GET_TYPE(last_node);
+        left_pid = DUMP_GET_LEFT_PID(last_node);
+        right_pid = DUMP_GET_RIGHT_PID(last_node);
+        free_offset = DUMP_GET_FREE_OFFSET(last_node);
+        free_space = DUMP_GET_FREE_SPACE(last_node);
+    }
+
+    /* scan the node until we find a match. */
+    while (last_node_next < n_entries)
+    {
+        if (cond_attr.type == TypeInt)
+        {
+           if (*((int *) &last_node[last_node_next*12]) > k_int)
+           {
+               /* found match. */
+               rid.pageNum = *((unsigned int *) &last_node[last_node_next*12 + 4]);
+               rid.slotNum = *((unsigned int *) &last_node[last_node_next*12 + 8]);
+
+               /* increment so we check the entry on next call. */
+               last_node_next++;
+               n_matches++;
+
+               return 0;
+           }
+           else if (*((int *) &last_node[last_node_next*12]) <= k_int)
+           {
+               last_node_next++;
+           }
+        }
+        else if (cond_attr.type == TypeReal)
+        {
+           if (*((float *) &last_node[last_node_next*12]) > k_float)
+           {
+               /* found match. */
+               rid.pageNum = *((unsigned int *) &last_node[last_node_next*12 + 4]);
+               rid.slotNum = *((unsigned int *) &last_node[last_node_next*12 + 8]);
+
+               /* increment so we check the entry on next call. */
+               last_node_next++;
+               n_matches++;
+
+               return 0;
+           }
+           else if (*((float *) &last_node[last_node_next*12]) <= k_float)
+           {
+               last_node_next++;
+           }
+        }
+        else if (cond_attr.type == TypeVarChar)
+        {
+            cout << "NOT IMPGTMENTED YET." << endl;
+            return 1;
+        }
+    }
+
+    /* right sibling exists */
+    if(right_pid != 0)
+    {
+        last_node_next = PF_PAGE_SIZE; // reset the next offset (triggers reading in new node)
+        next_pid = right_pid;
+        return GetNextEntryGT(rid);
     }
 
     /* finished scan, no more siblings to be read. */
