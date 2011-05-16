@@ -626,7 +626,7 @@ void ixTest_data_test_neq(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* create a data node (339 entries): [ (0,0,0) (0,1,1) (1,10,100) (10,11,101)... (338, 3381, 33801) ] */
+        /* create a data node (339 entries): [ (0,0,0) (0,1,1) (1,10,100) (1,11,101)... (338, 3381, 33801) ] */
         char new_buf[PF_PAGE_SIZE];
         unsigned int new_pid;
         unsigned int offset = 0;
@@ -640,9 +640,9 @@ void ixTest_data_test_neq(IX_Manager *ixmgr) // {{{
             /* create a second copy of the key [note the post increment is +2]. */
             if ((i+1) < (int) MAX_ENTRIES)
             {
-                (*((int *) &new_buf[(i+1)*12])) = i*10;
-                (*((unsigned int *) &new_buf[(i+1)*12+4])) = i*100 + 1;
-                (*((unsigned int *) &new_buf[(i+1)*12+8])) = i*1000 + 1;
+                (*((int *) &new_buf[(i+1)*12])) = i;
+                (*((unsigned int *) &new_buf[(i+1)*12+4])) = i*10 + 1;
+                (*((unsigned int *) &new_buf[(i+1)*12+8])) = i*100 + 1;
             }
         }
 
@@ -674,18 +674,13 @@ void ixTest_data_test_neq(IX_Manager *ixmgr) // {{{
             if (i == key) 
                 continue;
 
-            cout << i << endl;
             ZERO_ASSERT(scan.GetNextEntry(aux_rid));
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-            cout << i << ": " << aux_rid.pageNum << "," << aux_rid.slotNum << endl;
 
             /* duplicate key */
             if ((i+1) < (int) MAX_ENTRIES)
             {
-                cout << i << " (dupe)" << endl;
                 ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-                cout << "dupe of: " << i << " " << aux_rid.pageNum << "," << aux_rid.slotNum << endl;
-                cout << "dupe of: " << i << " " << (unsigned int) i*10+1 << "," << (unsigned int) i*100+1 << endl;
                 assert((aux_rid.pageNum == (unsigned int) i*10+1) && (aux_rid.slotNum == (unsigned int) i*100+1));
             }
         }
@@ -820,198 +815,620 @@ void ixTest_data_test_neq(IX_Manager *ixmgr) // {{{
     ZERO_ASSERT(rm->deleteTable(data_test_neq));
     cout << "PASS: deleteTable(" << data_test_neq << ")" << endl;
     // }}}
-//
-//    /* two data node neq test [k11 k12 ... k1n]<-> [k21 k22 ... k2n] */ // {{{
-//    cout << "\n[ data_test_neq - single data node neq test ]" << endl;
-//    ZERO_ASSERT(rm->createTable(data_test_neq, data_test_neq_attrs));
-//    cout << "PASS: createTable(" << output_schema(data_test_neq, data_test_neq_attrs) << ")" << endl;
-//
-//    ZERO_ASSERT(ixmgr->CreateIndex(data_test_neq, "a1"));
-//    cout << "PASS: CreateIndex(t1,a1)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->OpenIndex(data_test_neq, "a1", handle));
-//    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
-//
-//    assert(handle.GetNumberOfPages() == 1);
-//    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
-//
-//
-//    {
-//        /* create first data node (339 entries): [ (0,0,0) (1,10,100) (2,20,200) ... (338, 3380, 33800) ] */
-//        char new_buf[PF_PAGE_SIZE];
-//        unsigned int new_pid;
-//        unsigned int offset = 0;
-//
-//        for(int i=0; i<MAX_ENTRIES; i++, offset += 12)
-//        {
-//            (*((int *) &new_buf[i*12])) = i;
-//            (*((unsigned int *) &new_buf[i*12+4])) = i*10;
-//            (*((unsigned int *) &new_buf[i*12+8])) = i*100;
-//        }
-//
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0; // no node to the left
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 2; // right is going to be second node
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = MAX_ENTRIES; // num of entries
-//    
-//        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-//        assert(new_pid == 1);
-//        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
-//    }
-//
-//    {
-//        /* create second data node (339 entries): [ (0,0,0) (1,10,100) (2,20,200) ... (338, 3380, 33800) ] */
-//        char new_buf[PF_PAGE_SIZE];
-//        unsigned int new_pid;
-//        unsigned int offset = 0;
-//
-//        for(int i=0; i<MAX_ENTRIES; i++, offset += 12)
-//        {
-//            (*((int *) &new_buf[i*12])) = i;
-//            (*((unsigned int *) &new_buf[i*12+4])) = i*10;
-//            (*((unsigned int *) &new_buf[i*12+8])) = i*100;
-//        }
-//
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 1; // left is first node
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0; // no node to the right
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
-//        *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = MAX_ENTRIES; // num of entries
-//    
-//        ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
-//        assert(new_pid == 2);
-//        cout << "PASS: handle.NewNode([data]) && new_pid == 1" << endl;
-//    }
-//
-//    {
-//        int key = 90;
-//        struct RID aux_rid;
-//
-//        /* equality test */
-//        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
-//        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
-//
-//        for(int i=0; i<MAX_ENTRIES; i++)
-//        {
-//            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-//
-//            /* skip when key is equal. */
-//            if (i == key) 
-//                continue;
-//
-//            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-//            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-//        }
-//        
-//        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
-//
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//    {
-//        int key = 0;
-//        struct RID aux_rid;
-//
-//        /* equality test */
-//        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
-//        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
-//
-//        for(int i=0; i<MAX_ENTRIES; i++)
-//        {
-//            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-//
-//            /* skip when key is equal. */
-//            if (i == key) 
-//                continue;
-//
-//            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-//            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-//        }
-//        
-//        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
-//
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//    {
-//        int key = 338;
-//        struct RID aux_rid;
-//
-//        /* equality test */
-//        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
-//        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
-//
-//        for(int i=0; i<MAX_ENTRIES; i++)
-//        {
-//            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-//
-//            /* skip when key is equal. */
-//            if (i == key) 
-//                continue;
-//
-//            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-//            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-//        }
-//        
-//        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
-//
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//    {
-//        int key = 8000;
-//        struct RID aux_rid;
-//
-//        /* equality test */
-//        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
-//        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
-//
-//        for(int i=0; i<MAX_ENTRIES; i++)
-//        {
-//            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-//
-//            /* skip when key is equal. */
-//            if (i == key) 
-//                continue;
-//
-//            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-//            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-//        }
-//        
-//        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
-//
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//
-//
-//    ZERO_ASSERT(ixmgr->CloseIndex(handle));
-//    cout << "PASS: CloseIndex(handle)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_neq, "a1"));
-//    cout << "PASS: DestroyIndex(data_test_neq,a1)" << endl;
-//
-//    ZERO_ASSERT(rm->deleteTable(data_test_neq));
-//    cout << "PASS: deleteTable(" << data_test_neq << ")" << endl;
-//    // }}}
-//
+
+    /* two data node neq test [k11 k12 ... k1n]<-> [k21 k22 ... k2n] */ // {{{
+    cout << "\n[ data_test_neq - single data node neq test ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_neq, data_test_neq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_neq, data_test_neq_attrs) << ")" << endl;
+
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_neq, "a1"));
+    cout << "PASS: CreateIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_neq, "a1", handle));
+    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
+
+    assert(handle.GetNumberOfPages() == 1);
+    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
+
+
+    {
+        /* create two nodes. */
+        char new_buf[PF_PAGE_SIZE];
+        unsigned int new_pid;
+        unsigned int offset = 0;
+        int n_nodes = 2;
+      
+        for(int j=0; j<n_nodes; j++)
+        {
+            for(int i=0; i<MAX_ENTRIES; i++, offset += 12)
+            {
+                (*((int *) &new_buf[i*12])) = j*MAX_ENTRIES+i;
+                (*((unsigned int *) &new_buf[i*12+4])) = (j*MAX_ENTRIES+i)*10;
+                (*((unsigned int *) &new_buf[i*12+8])) = (j*MAX_ENTRIES+i)*100;
+            }
+
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0; // no node to the left
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = j+2; // right is going to be second node
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = MAX_ENTRIES; // num of entries
+
+            /* if final node, set the right node to 0. */
+            if (j == (n_nodes-1))
+                *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0; // no node for right.
+    
+            ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
+            assert(new_pid == (unsigned int) j+1);
+            cout << "PASS: handle.NewNode([data]) && new_pid == " << j+1 << endl;
+        }
+    }
+
+    {
+        int key = 90;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 0;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 338;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 339;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 500;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = (2*MAX_ENTRIES)-1;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 8000;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(2*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+
+
+    ZERO_ASSERT(ixmgr->CloseIndex(handle));
+    cout << "PASS: CloseIndex(handle)" << endl;
+
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_neq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_neq,a1)" << endl;
+
+    ZERO_ASSERT(rm->deleteTable(data_test_neq));
+    cout << "PASS: deleteTable(" << data_test_neq << ")" << endl;
+    // }}}
+
+    /* three data node neq test [k11 k12 ... k1n]<-> [k21 k22 ... k2n] */ // {{{
+    cout << "\n[ data_test_neq - single data node neq test ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_neq, data_test_neq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_neq, data_test_neq_attrs) << ")" << endl;
+
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_neq, "a1"));
+    cout << "PASS: CreateIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_neq, "a1", handle));
+    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
+
+    assert(handle.GetNumberOfPages() == 1);
+    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
+
+
+    {
+        /* create three nodes. */
+        char new_buf[PF_PAGE_SIZE];
+        unsigned int new_pid;
+        unsigned int offset = 0;
+        int n_nodes = 3;
+
+      
+        for(int j=0; j<n_nodes; j++)
+        {
+            for(int i=0; i<MAX_ENTRIES; i++, offset += 12)
+            {
+                (*((int *) &new_buf[i*12])) = j*MAX_ENTRIES+i;
+                (*((unsigned int *) &new_buf[i*12+4])) = (j*MAX_ENTRIES+i)*10;
+                (*((unsigned int *) &new_buf[i*12+8])) = (j*MAX_ENTRIES+i)*100;
+            }
+
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-20]) = 0; // no node to the left
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = j+2; // right is going to be second node
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-12]) = offset;
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-8]) = DUMP_TYPE_DATA; // type data
+            *((unsigned int *) &new_buf[PF_PAGE_SIZE-4]) = MAX_ENTRIES; // num of entries
+
+            /* if final node, set the right node to 0. */
+            if (j == (n_nodes-1))
+                *((unsigned int *) &new_buf[PF_PAGE_SIZE-16]) = 0; // no node for right.
+    
+            ZERO_ASSERT(handle.NewNode(new_buf, new_pid));
+            assert(new_pid == (unsigned int) j+1);
+            cout << "PASS: handle.NewNode([data]) && new_pid == " << j+1 << endl;
+        }
+    }
+
+    {
+        int key = 90;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 0;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 338;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = MAX_ENTRIES;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 500;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+
+    {
+        int key = (3*MAX_ENTRIES)-1;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 3*MAX_ENTRIES;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = (3*MAX_ENTRIES)+200;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = (3*MAX_ENTRIES)-1;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = 8000;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key, 1));
+        cout << "PASS: scan.OpenScan(h,!=," << key << ")" << endl;
+
+        for(int i=0; i<(3*MAX_ENTRIES); i++)
+        {
+            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
+
+            /* skip when key is equal. */
+            if (i == key) 
+                continue;
+
+            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
+        }
+        
+        cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+
+
+    ZERO_ASSERT(ixmgr->CloseIndex(handle));
+    cout << "PASS: CloseIndex(handle)" << endl;
+
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_neq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_neq,a1)" << endl;
+
+    ZERO_ASSERT(rm->deleteTable(data_test_neq));
+    cout << "PASS: deleteTable(" << data_test_neq << ")" << endl;
+    // }}}
+
 } // }}}
 
 int main() 
