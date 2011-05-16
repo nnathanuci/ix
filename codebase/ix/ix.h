@@ -137,7 +137,7 @@ class IX_IndexScan {
   int k_len;
 
   char last_node[PF_PAGE_SIZE];
-  unsigned int last_node_next;
+  int last_node_next;
   unsigned int last_node_pid;
 
   unsigned int n_matches;
