@@ -104,7 +104,7 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
     if (indexHandle.GetNumberOfPages() == 0)
     {
         char buf[PF_PAGE_SIZE] = {0};
-        *((unsigned int *) &buf[DUMP_TYPE]) = DUMP_TYPE_DELETED;
+        *((unsigned int *) &buf[DUMP_TYPE]) = DUMP_TYPE_DATA;
 
         
         if(indexHandle.NewNode(buf, pid))
