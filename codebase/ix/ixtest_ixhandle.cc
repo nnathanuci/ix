@@ -81,7 +81,7 @@ void ixTest_NewNode(IX_Manager *ixmgr)
     memset(new_buf, 0, PF_PAGE_SIZE);
     type = DUMP_TYPE_DELETED; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
     ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
-    assert(new_pid == 0);
+    assert(new_pid == 1);
     cout << "PASS: h1.NewNode([0*4096],new_pid) && new_pid==0 [new node replaced root node]" << endl;
 
     ZERO_ASSERT(ixmgr->CloseIndex(ix_handle1));
@@ -150,12 +150,12 @@ void ixTest_NewNode(IX_Manager *ixmgr)
             memset(new_buf, 0, PF_PAGE_SIZE);
             type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
             ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
-            /* new nodes should start at pid 0 and increase, since they're occupied. */
-            assert(new_pid == i);
+            /* new nodes should start at pid 1 and increase, since they're occupied. */
+            assert(new_pid == i+1);
             
         }
 
-        cout << "PASS: h1.NewNode([type=1])*10 [wrote new nodes from pid 0 to 9]" << endl;
+        cout << "PASS: h1.NewNode([type=1])*10 [wrote new nodes from pid 1 to 10]" << endl;
     }
 
     {
@@ -183,15 +183,15 @@ void ixTest_NewNode(IX_Manager *ixmgr)
     }
 
     {
-        /* new nodes 10, 11 */
+        /* new nodes 11, 12 */
         memset(new_buf, 0, PF_PAGE_SIZE);
         type = DUMP_TYPE_INDEX; memcpy((new_buf+PF_PAGE_SIZE-8), &type, sizeof(type));
         ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
-        assert(new_pid == 10);
-        cout << "PASS: h1.NewNode([type=1]) && new_pid == 10" << endl;
-        ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
         assert(new_pid == 11);
         cout << "PASS: h1.NewNode([type=1]) && new_pid == 11" << endl;
+        ZERO_ASSERT(ix_handle1.NewNode(new_buf, new_pid));
+        assert(new_pid == 12);
+        cout << "PASS: h1.NewNode([type=1]) && new_pid == 12" << endl;
     }
 
 
