@@ -117,6 +117,7 @@ class IX_IndexScan {
 
   RC GetNextEntry(RID &rid);  // Get next matching entry
   RC GetNextEntryEQ(RID &rid);  // Get next matching entry
+  RC GetNextEntryNE(RID &rid);  // Get next matching entry
   RC CloseScan();             // Terminate index scan
 
 
@@ -124,6 +125,7 @@ class IX_IndexScan {
   Attribute cond_attr;
   CompOp op;
   unsigned int start_pid;
+  unsigned int next_pid;
 
   int k_int;
   float k_float;

@@ -13,7 +13,7 @@ using namespace std;
 
 void cleanup() // {{{
 {
-  const char *files[6] = { "systemcatalog", "t1.a1", "t1.a2", "t1", "data_test1", "data_test1.a1" };
+  const char *files[6] = { "systemcatalog", "t1.a1", "t1.a2", "t1", "data_test_eq", "data_test_eq.a1" };
 
   for(int i = 0; i < 6; i++)
     remove(files[i]);
@@ -102,27 +102,27 @@ void ixTest_Insert(IX_Manager *ixmgr) // {{{
     // }}}
 } // }}}
 
-void ixTest_data_test1(IX_Manager *ixmgr) // {{{
+void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
 {
     RM *rm = RM::Instance();
     IX_IndexHandle handle;
     IX_IndexScan scan;
 
-    string data_test1 = "data_test1";
-    vector<Attribute> data_test1_attrs;
-    data_test1_attrs.push_back((struct Attribute) { "a1", TypeInt, 0 });
-    data_test1_attrs.push_back((struct Attribute) { "a2", TypeInt, 0 });
+    string data_test_eq = "data_test_eq";
+    vector<Attribute> data_test_eq_attrs;
+    data_test_eq_attrs.push_back((struct Attribute) { "a1", TypeInt, 0 });
+    data_test_eq_attrs.push_back((struct Attribute) { "a2", TypeInt, 0 });
 
 
     /* single key equality test [k1 k2 ... k* ... kn]. */ // {{{
-    cout << "\n[ data_test1 - single key equality test ]" << endl;
-    ZERO_ASSERT(rm->createTable(data_test1, data_test1_attrs));
-    cout << "PASS: createTable(" << output_schema(data_test1, data_test1_attrs) << ")" << endl;
+    cout << "\n[ data_test_eq - single key equality test ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
 
-    ZERO_ASSERT(ixmgr->CreateIndex(data_test1, "a1"));
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
     cout << "PASS: CreateIndex(t1,a1)" << endl;
 
-    ZERO_ASSERT(ixmgr->OpenIndex(data_test1, "a1", handle));
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
     cout << "PASS: OpenIndex(t1,a1,h)" << endl;
 
     assert(handle.GetNumberOfPages() == 1);
@@ -165,22 +165,22 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
     cout << "PASS: CloseIndex(handle)" << endl;
 
-    ZERO_ASSERT(ixmgr->DestroyIndex(data_test1, "a1"));
-    cout << "PASS: DestroyIndex(data_test1,a1)" << endl;
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
 
-    ZERO_ASSERT(rm->deleteTable(data_test1));
-    cout << "PASS: deleteTable(" << data_test1 << ")" << endl;
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
     // }}}
 
     /* single key equality test (missing key) [ki ki+1 ... kn], key: kj, s.t. j>n or j<i. */ // {{{
-    cout << "\n[ data_test1 - single key equality test (missing key) ]" << endl;
-    ZERO_ASSERT(rm->createTable(data_test1, data_test1_attrs));
-    cout << "PASS: createTable(" << output_schema(data_test1, data_test1_attrs) << ")" << endl;
+    cout << "\n[ data_test_eq - single key equality test (missing key) ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
 
-    ZERO_ASSERT(ixmgr->CreateIndex(data_test1, "a1"));
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
     cout << "PASS: CreateIndex(t1,a1)" << endl;
 
-    ZERO_ASSERT(ixmgr->OpenIndex(data_test1, "a1", handle));
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
     cout << "PASS: OpenIndex(t1,a1,h)" << endl;
 
     assert(handle.GetNumberOfPages() == 1);
@@ -235,22 +235,22 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
     cout << "PASS: CloseIndex(handle)" << endl;
 
-    ZERO_ASSERT(ixmgr->DestroyIndex(data_test1, "a1"));
-    cout << "PASS: DestroyIndex(data_test1,a1)" << endl;
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
 
-    ZERO_ASSERT(rm->deleteTable(data_test1));
-    cout << "PASS: deleteTable(" << data_test1 << ")" << endl;
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
     // }}}
 
     /* single key equality test [k1 k2 ... k* ... kn], key: kn */ // {{{
-    cout << "\n[ data_test1 - single key equality test (last key) ]" << endl;
-    ZERO_ASSERT(rm->createTable(data_test1, data_test1_attrs));
-    cout << "PASS: createTable(" << output_schema(data_test1, data_test1_attrs) << ")" << endl;
+    cout << "\n[ data_test_eq - single key equality test (last key) ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
 
-    ZERO_ASSERT(ixmgr->CreateIndex(data_test1, "a1"));
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
     cout << "PASS: CreateIndex(t1,a1)" << endl;
 
-    ZERO_ASSERT(ixmgr->OpenIndex(data_test1, "a1", handle));
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
     cout << "PASS: OpenIndex(t1,a1,h)" << endl;
 
     assert(handle.GetNumberOfPages() == 1);
@@ -295,22 +295,22 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
     cout << "PASS: CloseIndex(handle)" << endl;
 
-    ZERO_ASSERT(ixmgr->DestroyIndex(data_test1, "a1"));
-    cout << "PASS: DestroyIndex(data_test1,a1)" << endl;
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
 
-    ZERO_ASSERT(rm->deleteTable(data_test1));
-    cout << "PASS: deleteTable(" << data_test1 << ")" << endl;
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
     // }}}
 
     /* duplicate key equality test. [k1 k1 k2 k2 ... kn] key: k1, k8 */ // {{{
-    cout << "\n[ data_test1 - duplicate key equality test ]" << endl;
-    ZERO_ASSERT(rm->createTable(data_test1, data_test1_attrs));
-    cout << "PASS: createTable(" << output_schema(data_test1, data_test1_attrs) << ")" << endl;
+    cout << "\n[ data_test_eq - duplicate key equality test ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
 
-    ZERO_ASSERT(ixmgr->CreateIndex(data_test1, "a1"));
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
     cout << "PASS: CreateIndex(t1,a1)" << endl;
 
-    ZERO_ASSERT(ixmgr->OpenIndex(data_test1, "a1", handle));
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
     cout << "PASS: OpenIndex(t1,a1,h)" << endl;
 
     assert(handle.GetNumberOfPages() == 1);
@@ -386,11 +386,11 @@ void ixTest_data_test1(IX_Manager *ixmgr) // {{{
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
     cout << "PASS: CloseIndex(handle)" << endl;
 
-    ZERO_ASSERT(ixmgr->DestroyIndex(data_test1, "a1"));
-    cout << "PASS: DestroyIndex(data_test1,a1)" << endl;
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
 
-    ZERO_ASSERT(rm->deleteTable(data_test1));
-    cout << "PASS: deleteTable(" << data_test1 << ")" << endl;
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
     // }}}
 
 
@@ -405,7 +405,7 @@ int main()
 
   cout << "Insert and IndexScan Tests" << endl << endl;
   //ixTest_Insert(ixmgr);
-  ixTest_data_test1(ixmgr);
+  ixTest_data_test_eq(ixmgr);
 
   cout << "OK" << endl;
 }
