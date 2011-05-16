@@ -1899,7 +1899,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(2*MAX_ENTRIES); i++)
@@ -1928,7 +1928,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(2*MAX_ENTRIES); i++)
@@ -1957,7 +1957,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(2*MAX_ENTRIES); i++)
@@ -1986,22 +1986,8 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
-
-        for(int i=0; i<(2*MAX_ENTRIES); i++)
-        {
-            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-
-            /* skip when key is less than or equal. */
-            if (i <= key) 
-                continue;
-
-            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-        }
-        
-        cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
@@ -2015,22 +2001,8 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
-
-        for(int i=0; i<(2*MAX_ENTRIES); i++)
-        {
-            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-
-            /* skip when key is less than or equal. */
-            if (i <= key) 
-                continue;
-
-            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-        }
-        
-        cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
@@ -2162,7 +2134,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(3*MAX_ENTRIES); i++)
@@ -2191,7 +2163,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(3*MAX_ENTRIES); i++)
@@ -2220,7 +2192,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 2));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(3*MAX_ENTRIES); i++)
@@ -2246,11 +2218,11 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        int key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 3));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
 
         for(int i=0; i<(3*MAX_ENTRIES); i++)
@@ -2279,22 +2251,8 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 3));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
-
-        for(int i=0; i<(3*MAX_ENTRIES); i++)
-        {
-            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-
-            /* skip when key is less than or equal. */
-            if (i <= key) 
-                continue;
-
-            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-        }
-        
-        cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
@@ -2308,22 +2266,8 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 3));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
-
-        for(int i=0; i<(3*MAX_ENTRIES); i++)
-        {
-            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-
-            /* skip when key is less than or equal. */
-            if (i <= key) 
-                continue;
-
-            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-        }
-        
-        cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
@@ -2337,22 +2281,8 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         struct RID aux_rid;
 
         /* equality test */
-        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 1));
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 3));
         cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
-
-        for(int i=0; i<(3*MAX_ENTRIES); i++)
-        {
-            aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
-
-            /* skip when key is less than or equal. */
-            if (i <= key) 
-                continue;
-
-            ZERO_ASSERT(scan.GetNextEntry(aux_rid));
-            assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
-        }
-        
-        cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
@@ -2363,6 +2293,23 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
     {
         int key = 8000;
+        struct RID aux_rid;
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key, 3));
+        cout << "PASS: scan.OpenScan(h,>," << key << ")" << endl;
+
+        cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int key = -1000;
         struct RID aux_rid;
 
         /* equality test */
@@ -2389,8 +2336,6 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         ZERO_ASSERT(scan.CloseScan());
         cout << "PASS: scan.CloseScan()" << endl;
     }
-
-
 
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
     cout << "PASS: CloseIndex(handle)" << endl;
