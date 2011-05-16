@@ -120,6 +120,8 @@ class IX_IndexScan {
   RC GetNextEntryNE(RID &rid);  // Get next matching entry
   RC GetNextEntryGT(RID &rid);  // Get next matching entry
   RC GetNextEntryGE(RID &rid);  // Get next matching entry
+  RC GetNextEntryLT(RID &rid);  // Get next matching entry
+  RC GetNextEntryLE(RID &rid);  // Get next matching entry
   RC CloseScan();             // Terminate index scan
 
 
