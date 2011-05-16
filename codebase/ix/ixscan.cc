@@ -350,6 +350,10 @@ RC IX_IndexScan::GetNextEntryGT(RID &rid) // {{{
         }
     }
 
+    /* scanned node and didn't find any matches, which means no matches in data. */
+    if ((start_pid == next_pid) && (n_matches == 0))
+        return IX_EOF;
+
     /* right sibling exists */
     if(right_pid != 0)
     {
