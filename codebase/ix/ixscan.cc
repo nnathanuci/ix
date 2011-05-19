@@ -64,6 +64,9 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
     if(compOp == NO_OP)
         return -1;
 
+    /* debugging only. */
+    //handle.DumpNode(anchor_pid, 3);
+
     if (cond_attr.type == TypeInt)
     {
         k_int = *((int *) value);
@@ -537,14 +540,14 @@ RC IX_IndexScan::GetNextEntryLT(RID &rid) // {{{
                rid.slotNum = *((unsigned int *) &last_node[last_node_next*12 + 8]);
 
                /* increment so we check the entry on next call. */
-               last_node_next++;
+               last_node_next--;
                n_matches++;
 
                return 0;
            }
            else if (*((float *) &last_node[last_node_next*12]) >= k_float)
            {
-               last_node_next++;
+               last_node_next--;
            }
         }
         else if (cond_attr.type == TypeVarChar)
@@ -630,14 +633,14 @@ RC IX_IndexScan::GetNextEntryLE(RID &rid) // {{{
                rid.slotNum = *((unsigned int *) &last_node[last_node_next*12 + 8]);
 
                /* increment so we check the entry on next call. */
-               last_node_next++;
+               last_node_next--;
                n_matches++;
 
                return 0;
            }
            else if (*((float *) &last_node[last_node_next*12]) > k_float)
            {
-               last_node_next++;
+               last_node_next--;
            }
         }
         else if (cond_attr.type == TypeVarChar)
