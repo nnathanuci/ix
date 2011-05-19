@@ -64,7 +64,6 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
     if(compOp == NO_OP)
         return -1;
 
-    handle.DumpNode(anchor_pid,3);
     if (cond_attr.type == TypeInt)
     {
         k_int = *((int *) value);
