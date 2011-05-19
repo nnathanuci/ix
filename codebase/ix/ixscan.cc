@@ -60,8 +60,6 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
     last_node_next = PF_PAGE_SIZE;
     last_node_pid = 0;
 
-    handle.DumpNode(anchor_pid,3);
-
     /* NO_OP makes no sense. */
     if(compOp == NO_OP)
         return -1;
