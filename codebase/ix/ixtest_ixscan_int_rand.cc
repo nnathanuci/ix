@@ -3,6 +3,7 @@
 #include <cassert>
 #include <string>
 #include <sstream>
+#include <cstdlib>
 
 #include "ix.h"
 
@@ -25,6 +26,39 @@ void cleanup() // {{{
   for(int i = 0; i < 16; i++)
     remove(files[i]);
 
+} // }}}
+
+void shuffle_sequence(int *a, int n_elems) // {{{
+{
+    for (int i = 0; i < n_elems; i++)
+        a[i] = i;
+
+    for (int i = 0; i < n_elems; i++)
+    {
+        int r = i + (rand() % (n_elems - i));
+        int temp = a[i];
+        a[i] = a[r];
+        a[r] = temp;
+    }
+} // }}}
+
+void shuffle_even_sequence(int *a, int n_elems) // {{{
+{
+    for (int i = 0; i < n_elems; i += 2)
+    {
+        a[i] = i;
+
+        if((i+1) < n_elems)
+            a[i+1] = i;
+    }
+
+    for (int i = 0; i < n_elems; i++)
+    {
+        int r = i + (rand() % (n_elems - i));
+        int temp = a[i];
+        a[i] = a[r];
+        a[r] = temp;
+    }
 } // }}}
 
 string output_schema(string table_name, vector<Attribute> &attrs) // {{{
@@ -81,12 +115,12 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i*10;
-            struct RID r = {i*100, i*1000};
+            int k = randarray[i]*10;
+            struct RID r = {randarray[i]*100, randarray[i]*1000};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -138,12 +172,12 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i*10;
-            struct RID r = {i*100, i*1000};
+            int k = randarray[i]*10;
+            struct RID r = {randarray[i]*100, randarray[i]*1000};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -206,12 +240,12 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i*10;
-            struct RID r = {i*100, i*1000};
+            int k = randarray[i]*10;
+            struct RID r = {randarray[i]*100, randarray[i]*1000};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -263,24 +297,29 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
-        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i*10;
-            struct RID r = {i*100, i*1000};
-
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
-
-            if ((i+1) < (int) MAX_ENTRIES)
+            if ((randarray[i] % 2) == 0)
             {
-                r.pageNum++;
-                r.slotNum++;
-                ZERO_ASSERT(handle.InsertEntry(&k, r));
+                 int k = randarray[i]*10;
+                 struct RID r = {k*10, k*100};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            if ((randarray[i] % 2) == 1)
+            {
+                 int k = (randarray[i] - 1)*10;
+                 struct RID r = {k*10+1, k*100+1};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -367,13 +406,14 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            struct RID r = {i*10, i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
-            ZERO_ASSERT(handle.InsertEntry(&i, r));
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
         cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
@@ -518,24 +558,29 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
-        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
-
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
-
-            if ((i+1) < (int) MAX_ENTRIES)
+            if ((randarray[i] % 2) == 0)
             {
-                r.pageNum++;
-                r.slotNum++;
-                ZERO_ASSERT(handle.InsertEntry(&k, r));
+                 int k = randarray[i];
+                 struct RID r = {k*10, k*100};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            if ((randarray[i] % 2) == 1)
+            {
+                 int k = randarray[i] - 1;
+                 struct RID r = {k*10+1, k*100+1};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -706,19 +751,18 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     assert(handle.GetNumberOfPages() == 1);
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
-
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(2*MAX_ENTRIES)]; shuffle_sequence(randarray, (2*MAX_ENTRIES));
 
         for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (2*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -944,17 +988,17 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(3*MAX_ENTRIES)]; shuffle_sequence(randarray, (3*MAX_ENTRIES));
 
-        for(int i=0; i<(int)3*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(3*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (3*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -1279,17 +1323,17 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(1*MAX_ENTRIES)]; shuffle_sequence(randarray, (1*MAX_ENTRIES));
 
-        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(1*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (1*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -1405,24 +1449,29 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
-        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
-
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
-
-            if ((i+1) < (int) MAX_ENTRIES)
+            if ((randarray[i] % 2) == 0)
             {
-                r.pageNum++;
-                r.slotNum++;
-                ZERO_ASSERT(handle.InsertEntry(&k, r));
+                 int k = randarray[i];
+                 struct RID r = {k*10, k*100};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            if ((randarray[i] % 2) == 1)
+            {
+                 int k = randarray[i] - 1;
+                 struct RID r = {k*10+1, k*100+1};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -1595,17 +1644,17 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(2*MAX_ENTRIES)]; shuffle_sequence(randarray, (2*MAX_ENTRIES));
 
-        for(int i=0; i<(int)2*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (2*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -1804,17 +1853,17 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(3*MAX_ENTRIES)]; shuffle_sequence(randarray, (3*MAX_ENTRIES));
 
-        for(int i=0; i<(int)3*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(3*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (3*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -2111,17 +2160,17 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(1*MAX_ENTRIES)]; shuffle_sequence(randarray, (1*MAX_ENTRIES));
 
-        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(1*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (1*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -2250,24 +2299,29 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
-        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
-
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
-
-            if ((i+1) < (int) MAX_ENTRIES)
+            if ((randarray[i] % 2) == 0)
             {
-                r.pageNum++;
-                r.slotNum++;
-                ZERO_ASSERT(handle.InsertEntry(&k, r));
+                 int k = randarray[i];
+                 struct RID r = {k*10, k*100};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            if ((randarray[i] % 2) == 1)
+            {
+                 int k = randarray[i] - 1;
+                 struct RID r = {k*10+1, k*100+1};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -2440,17 +2494,17 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(2*MAX_ENTRIES)]; shuffle_sequence(randarray, (2*MAX_ENTRIES));
 
-        for(int i=0; i<(int)2*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (2*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -2661,17 +2715,17 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(3*MAX_ENTRIES)]; shuffle_sequence(randarray, (3*MAX_ENTRIES));
 
-        for(int i=0; i<(int)3*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(3*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (3*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -2980,17 +3034,17 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(1*MAX_ENTRIES)]; shuffle_sequence(randarray, (1*MAX_ENTRIES));
 
-        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(1*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (1*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -3159,24 +3213,29 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
-        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
-
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
-
-            if ((i+1) < (int) MAX_ENTRIES)
+            if ((randarray[i] % 2) == 0)
             {
-                r.pageNum++;
-                r.slotNum++;
-                ZERO_ASSERT(handle.InsertEntry(&k, r));
+                 int k = randarray[i];
+                 struct RID r = {k*10, k*100};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            if ((randarray[i] % 2) == 1)
+            {
+                 int k = randarray[i] - 1;
+                 struct RID r = {k*10+1, k*100+1};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -3383,17 +3442,17 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(2*MAX_ENTRIES)]; shuffle_sequence(randarray, (2*MAX_ENTRIES));
 
-        for(int i=0; i<(int)2*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (2*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -3618,17 +3677,17 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(3*MAX_ENTRIES)]; shuffle_sequence(randarray, (3*MAX_ENTRIES));
 
-        for(int i=0; i<(int)3*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(3*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (3*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -3979,17 +4038,17 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(1*MAX_ENTRIES)]; shuffle_sequence(randarray, (1*MAX_ENTRIES));
 
-        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(1*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (1*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -4158,24 +4217,29 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[MAX_ENTRIES]; shuffle_sequence(randarray, MAX_ENTRIES);
 
-        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
-
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
-
-            if ((i+1) < (int) MAX_ENTRIES)
+            if ((randarray[i] % 2) == 0)
             {
-                r.pageNum++;
-                r.slotNum++;
-                ZERO_ASSERT(handle.InsertEntry(&k, r));
+                 int k = randarray[i];
+                 struct RID r = {k*10, k*100};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
             }
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            if ((randarray[i] % 2) == 1)
+            {
+                 int k = randarray[i] - 1;
+                 struct RID r = {k*10+1, k*100+1};
+                 ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -4382,17 +4446,17 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(2*MAX_ENTRIES)]; shuffle_sequence(randarray, (2*MAX_ENTRIES));
 
-        for(int i=0; i<(int)2*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (2*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -4617,17 +4681,17 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
 
     {
-        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+        int randarray[(3*MAX_ENTRIES)]; shuffle_sequence(randarray, (3*MAX_ENTRIES));
 
-        for(int i=0; i<(int)3*MAX_ENTRIES; i++)
+        for(int i=0; i<(int)(3*MAX_ENTRIES); i++)
         {
-            int k = i;
-            struct RID r = {i*10,i*100};
+            int k = randarray[i];
+            struct RID r = {randarray[i]*10, randarray[i]*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
-        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+        cout << "PASS: handle.InsertEntries(k: 0 to " << (3*MAX_ENTRIES) << ", [k*10,k*100])" << endl;
     }
 
     {
@@ -4958,6 +5022,7 @@ int main()
 {
   cout << "test..." << endl;
   IX_Manager *ixmgr = IX_Manager::Instance();
+  srand(42);
 
   cleanup();
 
