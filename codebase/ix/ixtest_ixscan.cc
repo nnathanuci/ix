@@ -348,11 +348,11 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
         assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
-        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*100 << "," << key*1000 << "}" << endl;
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10 << "," << key*100 << "}" << endl;
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
         assert((aux_rid.pageNum == (unsigned int) (key*10+1)) && (aux_rid.slotNum == (unsigned int) (key*100+1)));
-        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*100 << "," << key*1000 << "}" << endl;
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10+1 << "," << key*100+1 << "}" << endl;
         
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
@@ -367,11 +367,11 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
         assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
-        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*100 << "," << key*1000 << "}" << endl;
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10 << "," << key*100 << "}" << endl;
 
         ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
         assert((aux_rid.pageNum == (unsigned int) (key*10+1)) && (aux_rid.slotNum == (unsigned int) (key*100+1)));
-        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*100+1 << "," << key*1000+1 << "}" << endl;
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10+1 << "," << key*100+1 << "}" << endl;
         
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
