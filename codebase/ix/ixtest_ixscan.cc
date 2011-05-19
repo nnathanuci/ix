@@ -5019,6 +5019,11 @@ int main()
   cout << "Insert and IndexScan Tests" << endl << endl;
   //ixTest_Insert(ixmgr);
   ixTest_data_test_eq(ixmgr);
+  ixTest_data_test_ne(ixmgr);
+  ixTest_data_test_gt(ixmgr);
+  ixTest_data_test_ge(ixmgr);
+  ixTest_data_test_lt(ixmgr);
+  ixTest_data_test_le(ixmgr);
 
   cout << "OK" << endl;
 }
