@@ -64,21 +64,21 @@ public:
     inline void write_int_entry(void* p)
     {
     	(( int*) p)[0]	= key_int;
-    	(( int*) p)[1]	= r_page;
+    	(( unsigned*) p)[1]	= r_page;
 
     	if (data_entry)
-    		(( int*) p)[2]	= slot_id;
+    		(( unsigned*) p)[2]	= slot_id;
     }
 
     inline void read_int_entry (void* p, unsigned int type)
     {
     	key_int	= ((int*) p)[0] ;
-    	r_page	= ((int*) p)[1];
+    	r_page	= ((unsigned*) p)[1];
 
     	if (type == TYPE_DATA)
     	{
     		data_entry = true;
-    		slot_id = (( int*) p)[2];
+    		slot_id = (( unsigned*) p)[2];
     	}
     	else
     	{
@@ -89,20 +89,20 @@ public:
     inline void write_real_entry(void* p)
     {
     	(( float*) p)[0] = key_real;
-    	(( int*) p)[1] = r_page;
+    	(( unsigned int*) p)[1] = r_page;
 
     	if (data_entry)
-    		(( float*) p)[2]	= slot_id;
+    		(( unsigned int*) p)[2]	= slot_id;
     }
     inline void read_real_entry (void* p, unsigned int type)
     {
     	key_real	= ((float*) p)[0] ;
-    	r_page		= ((  int*) p)[1] ;
+    	r_page		= ((unsigned int*) p)[1] ;
 
     	if (type == TYPE_DATA)
     	{
     		data_entry = true;
-    		slot_id = (( float*) p)[2];
+    		slot_id = (( unsigned int*) p)[2];
     	}
     	else
     	{

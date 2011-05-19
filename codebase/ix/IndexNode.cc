@@ -171,7 +171,7 @@ RC IndexNode::tree_search_real(unsigned int nodePointer, Entry key, RID& r_val)
 		e.setMode(TypeReal);
 		e.setKey(key.getKeyReal());
 		RC rc 	= find_entry(e);
-		r_val.pageNum	= e.getPage();
+		r_val.pageNum	= this->getPage_num();//e.getPage()
 		r_val.slotNum	= e.getSlot();
 		return rc;
 	}
