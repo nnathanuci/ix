@@ -446,13 +446,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -474,13 +474,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -502,13 +502,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -530,13 +530,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -605,7 +605,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -640,7 +640,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -675,7 +675,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -710,7 +710,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -725,7 +725,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
         }
 
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"} or {" << key*10+1 << "," << key*100+1 <<"}" << endl;
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -788,13 +788,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -816,13 +816,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -844,13 +844,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -872,13 +872,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -900,13 +900,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -928,13 +928,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -956,13 +956,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1024,13 +1024,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1052,13 +1052,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1080,13 +1080,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1108,13 +1108,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1136,13 +1136,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1165,13 +1165,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1193,13 +1193,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1221,13 +1221,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1249,13 +1249,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1277,13 +1277,13 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is equal. */
-            if (i == key) 
+            if (i == key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key != " << key << " and rid != {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1359,13 +1359,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1387,13 +1387,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1492,7 +1492,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -1527,7 +1527,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -1562,7 +1562,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -1597,7 +1597,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -1612,7 +1612,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         }
 
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"} or {" << key*10+1 << "," << key*100+1 <<"}" << endl;
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1675,13 +1675,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1703,13 +1703,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1731,13 +1731,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1759,13 +1759,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1787,13 +1787,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1884,13 +1884,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1912,13 +1912,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1940,13 +1940,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1968,13 +1968,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -1996,13 +1996,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2025,13 +2025,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2111,13 +2111,13 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than or equal. */
-            if (i <= key) 
+            if (i <= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key > " << key << " and rid > {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2191,13 +2191,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2219,13 +2219,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2247,13 +2247,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2337,7 +2337,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -2372,7 +2372,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -2407,7 +2407,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -2442,7 +2442,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -2457,7 +2457,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
         }
 
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"} or {" << key*10+1 << "," << key*100+1 <<"}" << endl;
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2520,13 +2520,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2548,13 +2548,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2576,13 +2576,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2604,13 +2604,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2632,13 +2632,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2660,13 +2660,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2741,13 +2741,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2769,13 +2769,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2797,13 +2797,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2825,13 +2825,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2853,13 +2853,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2882,13 +2882,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -2938,13 +2938,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
 
@@ -2981,13 +2981,13 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is less than. */
-            if (i < key) 
+            if (i < key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key >= " << key << "  and rid >= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3060,13 +3060,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3088,13 +3088,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3116,7 +3116,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3144,7 +3144,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3172,13 +3172,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3246,7 +3246,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             /* duplicate key */
@@ -3281,7 +3281,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             /* duplicate key */
@@ -3316,7 +3316,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             /* duplicate key */
@@ -3351,7 +3351,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             /* duplicate key */
@@ -3387,7 +3387,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             /* duplicate key */
@@ -3402,7 +3402,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
         }
 
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"} or {" << key*10+1 << "," << key*100+1 <<"}" << endl;
-        
+
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
 
@@ -3463,13 +3463,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3491,13 +3491,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3519,13 +3519,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3547,13 +3547,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3575,13 +3575,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3603,7 +3603,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3631,7 +3631,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3698,13 +3698,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3726,13 +3726,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3754,13 +3754,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3782,13 +3782,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3810,13 +3810,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3839,13 +3839,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -3867,7 +3867,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3895,7 +3895,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3924,7 +3924,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3952,7 +3952,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -3980,13 +3980,13 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than or equal. */
-            if (i >= key) 
+            if (i >= key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key < " << key << " and rid < {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4059,13 +4059,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4087,13 +4087,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4115,7 +4115,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4143,7 +4143,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4171,13 +4171,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4245,7 +4245,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             /* duplicate key */
@@ -4280,7 +4280,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             /* duplicate key */
@@ -4315,7 +4315,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             /* duplicate key */
@@ -4350,7 +4350,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             /* duplicate key */
@@ -4386,7 +4386,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = 2; /* seed with bad values */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             /* duplicate key */
@@ -4401,7 +4401,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
         }
 
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"} or {" << key*10+1 << "," << key*100+1 <<"}" << endl;
-        
+
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
 
@@ -4462,13 +4462,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4490,13 +4490,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4518,13 +4518,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4546,13 +4546,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4574,13 +4574,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4602,7 +4602,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4630,7 +4630,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4697,13 +4697,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4725,13 +4725,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4753,13 +4753,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4781,13 +4781,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4809,13 +4809,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4838,13 +4838,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
@@ -4866,7 +4866,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4894,7 +4894,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4923,7 +4923,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4951,7 +4951,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
@@ -4979,13 +4979,13 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
             aux_rid.pageNum = aux_rid.slotNum = i+1; /* seed with bad values. */
 
             /* skip when key is greater than. */
-            if (i > key) 
+            if (i > key)
                 continue;
 
             ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(i, aux_rid);
             assert((aux_rid.pageNum == (unsigned int) i*10) && (aux_rid.slotNum == (unsigned int) i*100));
         }
-        
+
         cout << "PASS: scan.GetNextEntry(...) s.t. key <= " << key << " and rid <= {" << key*10 << "," << key*100 <<"}" << endl;
 
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);

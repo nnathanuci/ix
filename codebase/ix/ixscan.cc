@@ -1,5 +1,5 @@
 #include "ix.h"
-
+#include "IndexNode.h"
 //class IX_IndexScan {
 // public:
 //  IX_IndexScan();  								// Constructor
@@ -26,14 +26,28 @@ IX_IndexScan::~IX_IndexScan() // {{{
 RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void *value) // {{{
 {
     /* find which data node has the key. */
+	RID rid;
+	rid.pageNum = 0;
+	rid.slotNum = 0;
+	IndexNode node( (IX_IndexHandle&) indexHandle, 0);
 
-    /* return OpenScan(indexHandle, compOp, value, data_page_id) */
-    return -1;
+	if (compOp == NE_OP)
+		node.get_leftmost_data_node(rid);
+	else
+	{
+		if (indexHandle.attr.type == TypeReal)
+			node.find(*((float*)value),rid);
+		else if (indexHandle.attr.type == TypeInt)
+			node.find(*((int*)value),rid);
+		else
+			return -1;
+	}
+
+    return OpenScan(indexHandle, compOp, value, rid.pageNum) ;
+    //return 0;
 } // }}}
 
-
-/* a test verson, where we assume search(key) yields anchor_pid the first data node. */ // {{{
-RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void *value, int anchor_pid)
+RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void *value, int anchor_pid) // {{{
 {
     handle = indexHandle;
     op = compOp;
@@ -359,10 +373,6 @@ RC IX_IndexScan::GetNextEntryGT(RID &rid) // {{{
         }
     }
 
-    /* scanned node and didn't find any matches, which means no matches in data. */
-    if ((start_pid == next_pid) && (n_matches == 0))
-        return IX_EOF;
-
     /* right sibling exists */
     if(right_pid != 0)
     {
@@ -452,10 +462,6 @@ RC IX_IndexScan::GetNextEntryGE(RID &rid) // {{{
             return 1;
         }
     }
-
-    /* scanned node and didn't find any matches, which means no matches in data. */
-    if ((start_pid == next_pid) && (n_matches == 0))
-        return IX_EOF;
 
     /* right sibling exists */
     if(right_pid != 0)
@@ -550,10 +556,6 @@ RC IX_IndexScan::GetNextEntryLT(RID &rid) // {{{
         }
     }
 
-    /* scanned node and didn't find any matches, which means no matches in data. */
-    if ((start_pid == next_pid) && (n_matches == 0))
-        return IX_EOF;
-
     /* left sibling exists */
     if(left_pid != 0)
     {
@@ -646,10 +648,6 @@ RC IX_IndexScan::GetNextEntryLE(RID &rid) // {{{
             return 1;
         }
     }
-
-    /* scanned node and didn't find any matches, which means no matches in data. */
-    if ((start_pid == next_pid) && (n_matches == 0))
-        return IX_EOF;
 
     /* left sibling exists */
     if(left_pid != 0)
