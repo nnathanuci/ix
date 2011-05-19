@@ -19,9 +19,10 @@ int debug = 0;
 
 void cleanup() // {{{
 {
-  const char *files[6] = { "systemcatalog", "t1.a1", "t1.a2", "t1", "data_test_eq", "data_test_eq.a1" };
+  const char *files[16] = { "systemcatalog", "t1.a1", "t1.a2", "t1", "data_test_eq", "data_test_eq.a1", "data_test_ne", "data_test_ne.a1", "data_test_gt", "data_test_gt.a1","data_test_ge","data_test_ge.a1","data_test_lt", "data_test_lt.a1","data_test_le", "data_test_le.a1" };
 
-  for(int i = 0; i < 6; i++)
+
+  for(int i = 0; i < 16; i++)
     remove(files[i]);
 
 } // }}}
@@ -426,7 +427,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10, i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
