@@ -426,10 +426,9 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
             struct RID r = {i*10, i*100};
 
-            ZERO_ASSERT(handle.InsertEntry(&k, r));
+            ZERO_ASSERT(handle.InsertEntry(&i, r));
         }
 
         cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
@@ -579,7 +578,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
 
@@ -769,7 +768,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -1005,7 +1004,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -1340,7 +1339,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -1466,7 +1465,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
 
@@ -1656,7 +1655,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -1865,7 +1864,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -2172,7 +2171,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -2311,7 +2310,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
 
@@ -2501,7 +2500,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -2722,7 +2721,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -3041,7 +3040,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -3220,7 +3219,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
 
@@ -3444,7 +3443,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -3679,7 +3678,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -4040,7 +4039,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -4219,7 +4218,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
 
@@ -4443,7 +4442,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
@@ -4678,7 +4677,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
             int k = i;
-            struct RID r = {i*105, i*1005};
+            struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
