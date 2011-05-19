@@ -122,221 +122,220 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
     ZERO_ASSERT(rm->deleteTable(data_test_eq));
     cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
     // }}}
-//
-//    /* single key equality test (missing key) [ki ki+1 ... kn], key: kj, s.t. j>n or j<i. */ // {{{
-//    cout << "\n[ data_test_eq - single key equality test (missing key) ]" << endl;
-//    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
-//    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
-//
-//    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
-//    cout << "PASS: CreateIndex(t1,a1)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
-//    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
-//
-//    assert(handle.GetNumberOfPages() == 1);
-//    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
-//
-//    {
-//        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
-//
-//        for(int i=0; i<(int)MAX_ENTRIES; i++)
-//        {
-//            float k = i*10;
-//            struct RID r = {i*100, i*1000};
-//
-//            ZERO_ASSERT(handle.InsertEntry(&k, r));
-//        }
-//
-//        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
-//    }
-//
-//    {
-//        float key = 25;
-//        RID aux_rid = {0, 0};
-//
-//        /* equality test on key=20 */
-//        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
-//        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
-//
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//    {
-//        RID aux_rid = {0, 0};
-//        float key = MAX_ENTRIES*10; /* shouldn't exist. */
-//
-//        /* equality test on key=20 */
-//        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
-//        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
-//
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//    ZERO_ASSERT(ixmgr->CloseIndex(handle));
-//    cout << "PASS: CloseIndex(handle)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
-//    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
-//
-//    ZERO_ASSERT(rm->deleteTable(data_test_eq));
-//    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
-//    // }}}
-//
-//    /* single key equality test [k1 k2 ... k* ... kn], key: kn */ // {{{
-//    cout << "\n[ data_test_eq - single key equality test (last key) ]" << endl;
-//    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
-//    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
-//
-//    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
-//    cout << "PASS: CreateIndex(t1,a1)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
-//    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
-//
-//    assert(handle.GetNumberOfPages() == 1);
-//    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
-//
-//    {
-//        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
-//
-//        for(int i=0; i<(int)MAX_ENTRIES; i++)
-//        {
-//            float k = i*10;
-//            struct RID r = {i*100, i*1000};
-//
-//            ZERO_ASSERT(handle.InsertEntry(&k, r));
-//        }
-//
-//        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
-//    }
-//
-//    {
-//        float key = 3380;
-//        RID aux_rid = {0, 0};
-//
-//        /* equality test */
-//        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
-//        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
-//
-//        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
-//        assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
-//        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*100 << "," << key*1000 << "}" << endl;
-//        
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//    }
-//
-//    ZERO_ASSERT(ixmgr->CloseIndex(handle));
-//    cout << "PASS: CloseIndex(handle)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
-//    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
-//
-//    ZERO_ASSERT(rm->deleteTable(data_test_eq));
-//    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
-//    // }}}
-//
-//    /* duplicate key equality test. [k1 k1 k2 k2 ... kn] key: k1, k8 */ // {{{
-//    cout << "\n[ data_test_eq - duplicate key equality test ]" << endl;
-//    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
-//    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
-//
-//    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
-//    cout << "PASS: CreateIndex(t1,a1)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
-//    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
-//
-//    assert(handle.GetNumberOfPages() == 1);
-//    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
-//
-//    {
-//        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
-//
-//        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
-//        {
-//            float k = i*10;
-//            struct RID r = {i*100, i*1000};
-//
-//            ZERO_ASSERT(handle.InsertEntry(&k, r));
-//
-//            if ((i+1) < (int) MAX_ENTRIES)
-//            {
-//                r.pageNum++;
-//                r.slotNum++;
-//                ZERO_ASSERT(handle.InsertEntry(&k, r));
-//            }
-//        }
-//
-//        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
-//    }
-//
-//    {
-//        // test two duplicate entries
-//
-//        float key = 0;
-//        RID aux_rid = {0, 0};
-//
-//        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
-//        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
-//
-//        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
-//        assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
-//        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10 << "," << key*100 << "}" << endl;
-//
-//        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
-//        assert((aux_rid.pageNum == (unsigned int) (key*10+1)) && (aux_rid.slotNum == (unsigned int) (key*100+1)));
-//        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10+1 << "," << key*100+1 << "}" << endl;
-//        
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//
-//        key = 80;
-//
-//        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
-//        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
-//
-//        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
-//        assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
-//        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10 << "," << key*100 << "}" << endl;
-//
-//        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
-//        assert((aux_rid.pageNum == (unsigned int) (key*10+1)) && (aux_rid.slotNum == (unsigned int) (key*100+1)));
-//        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10+1 << "," << key*100+1 << "}" << endl;
-//        
-//        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-//        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
-//
-//        ZERO_ASSERT(scan.CloseScan());
-//        cout << "PASS: scan.CloseScan()" << endl;
-//
-//    }
-//
-//    ZERO_ASSERT(ixmgr->CloseIndex(handle));
-//    cout << "PASS: CloseIndex(handle)" << endl;
-//
-//    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
-//    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
-//
-//    ZERO_ASSERT(rm->deleteTable(data_test_eq));
-//    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
-//    // }}}
-//
+
+    /* single key equality test (missing key) [ki ki+1 ... kn], key: kj, s.t. j>n or j<i. */ // {{{
+    cout << "\n[ data_test_eq - single key equality test (missing key) ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
+
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
+    cout << "PASS: CreateIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
+    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
+
+    assert(handle.GetNumberOfPages() == 1);
+    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
+
+    {
+        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            float k = i*10;
+            struct RID r = {i*100, i*1000};
+
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+    }
+
+    {
+        float key = 25;
+        RID aux_rid = {0, 0};
+
+        /* equality test on key=20 */
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
+        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        RID aux_rid = {0, 0};
+        float key = MAX_ENTRIES*10; /* shouldn't exist. */
+
+        /* equality test on key=20 */
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
+        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
+
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    ZERO_ASSERT(ixmgr->CloseIndex(handle));
+    cout << "PASS: CloseIndex(handle)" << endl;
+
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
+
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
+    // }}}
+
+    /* single key equality test [k1 k2 ... k* ... kn], key: kn */ // {{{
+    cout << "\n[ data_test_eq - single key equality test (last key) ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
+
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
+    cout << "PASS: CreateIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
+    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
+
+    assert(handle.GetNumberOfPages() == 1);
+    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
+
+    {
+        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+
+        for(int i=0; i<(int)MAX_ENTRIES; i++)
+        {
+            float k = i*10;
+            struct RID r = {i*100, i*1000};
+
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+    }
+
+    {
+        float key = 3380;
+        RID aux_rid = {0, 0};
+
+        /* equality test */
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
+        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
+
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
+        assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*100 << "," << key*1000 << "}" << endl;
+        
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    ZERO_ASSERT(ixmgr->CloseIndex(handle));
+    cout << "PASS: CloseIndex(handle)" << endl;
+
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
+
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
+    // }}}
+
+    /* duplicate key equality test. [k1 k1 k2 k2 ... kn] key: k1, k8 */ // {{{
+    cout << "\n[ data_test_eq - duplicate key equality test ]" << endl;
+    ZERO_ASSERT(rm->createTable(data_test_eq, data_test_eq_attrs));
+    cout << "PASS: createTable(" << output_schema(data_test_eq, data_test_eq_attrs) << ")" << endl;
+
+    ZERO_ASSERT(ixmgr->CreateIndex(data_test_eq, "a1"));
+    cout << "PASS: CreateIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(ixmgr->OpenIndex(data_test_eq, "a1", handle));
+    cout << "PASS: OpenIndex(t1,a1,h)" << endl;
+
+    assert(handle.GetNumberOfPages() == 1);
+    cout << "PASS: h.GetNumberOfPages == 1 [root node]" << endl;
+
+    {
+        /* XXX: create & convert to shuffled array for values 0 to 338; switch to InsertEntry */
+
+        for(int i=0; i<(int)MAX_ENTRIES; i+=2)
+        {
+            float k = i*10;
+            struct RID r = {i*100, i*1000};
+
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
+
+            if ((i+1) < (int) MAX_ENTRIES)
+            {
+                r.pageNum++;
+                r.slotNum++;
+                ZERO_ASSERT(handle.InsertEntry(&k, r));
+            }
+        }
+
+        cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
+    }
+
+    {
+        // test two duplicate entries
+
+        float key = 0;
+        RID aux_rid = {0, 0};
+
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
+        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
+
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
+        assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10 << "," << key*100 << "}" << endl;
+
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
+        assert((aux_rid.pageNum == (unsigned int) (key*10+1)) && (aux_rid.slotNum == (unsigned int) (key*100+1)));
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10+1 << "," << key*100+1 << "}" << endl;
+        
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+        key = 80;
+
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &key));
+        cout << "PASS: scan.OpenScan(h,=," << key << ")" << endl;
+
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
+        assert((aux_rid.pageNum == (unsigned int) key*10) && (aux_rid.slotNum == (unsigned int) key*100));
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10 << "," << key*100 << "}" << endl;
+
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid)); if (debug) DUMP_KEYVAL(key, aux_rid);
+        assert((aux_rid.pageNum == (unsigned int) (key*10+1)) && (aux_rid.slotNum == (unsigned int) (key*100+1)));
+        cout << "PASS: scan.GetNextEntry(aux_rid) && aux_rid == {" << key*10+1 << "," << key*100+1 << "}" << endl;
+        
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(aux_rid) == IX_EOF" << endl;
+
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+    }
+
+    ZERO_ASSERT(ixmgr->CloseIndex(handle));
+    cout << "PASS: CloseIndex(handle)" << endl;
+
+    ZERO_ASSERT(ixmgr->DestroyIndex(data_test_eq, "a1"));
+    cout << "PASS: DestroyIndex(data_test_eq,a1)" << endl;
+
+    ZERO_ASSERT(rm->deleteTable(data_test_eq));
+    cout << "PASS: deleteTable(" << data_test_eq << ")" << endl;
+    // }}}
 
 } // }}}
 
@@ -371,16 +370,17 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
+            float k = i;
             struct RID r = {i*10, i*100};
 
-            ZERO_ASSERT(handle.InsertEntry(&i, r));
+            ZERO_ASSERT(handle.InsertEntry(&k, r));
         }
 
         cout << "PASS: handle.InsertEntries(k: 0 to " << MAX_ENTRIES << ", [k*100,k*1000])" << endl;
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -408,7 +408,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -436,7 +436,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -464,7 +464,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -522,7 +522,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -539,7 +539,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -574,7 +574,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -609,7 +609,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -644,7 +644,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -712,7 +712,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)(2*MAX_ENTRIES); i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -722,7 +722,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -750,7 +750,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -778,7 +778,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -806,7 +806,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 339;
+        float key = 339;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -834,7 +834,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -862,7 +862,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -890,7 +890,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -948,7 +948,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -958,7 +958,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -986,7 +986,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1014,7 +1014,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1042,7 +1042,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = MAX_ENTRIES;
+        float key = MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1070,7 +1070,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1099,7 +1099,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
 
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        float key = (3*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1127,7 +1127,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 3*MAX_ENTRIES;
+        float key = 3*MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1155,7 +1155,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)+200;
+        float key = (3*MAX_ENTRIES)+200;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1183,7 +1183,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        float key = (3*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1211,7 +1211,7 @@ void ixTest_data_test_ne(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &key));
@@ -1283,7 +1283,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -1293,7 +1293,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1321,7 +1321,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1349,7 +1349,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1364,7 +1364,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1409,7 +1409,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -1426,7 +1426,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1461,7 +1461,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1496,7 +1496,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1531,7 +1531,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1599,7 +1599,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -1609,7 +1609,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1637,7 +1637,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1665,7 +1665,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1693,7 +1693,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 339;
+        float key = 339;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1721,7 +1721,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1749,7 +1749,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1763,7 +1763,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1808,7 +1808,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -1818,7 +1818,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1846,7 +1846,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1874,7 +1874,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1902,7 +1902,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = MAX_ENTRIES;
+        float key = MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1930,7 +1930,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1959,7 +1959,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
 
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -1987,7 +1987,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 3*MAX_ENTRIES;
+        float key = 3*MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -2001,7 +2001,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)+200;
+        float key = (3*MAX_ENTRIES)+200;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -2015,7 +2015,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        float key = (3*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -2029,7 +2029,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -2045,7 +2045,7 @@ void ixTest_data_test_gt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -1000;
+        float key = -1000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GT_OP, &key));
@@ -2115,7 +2115,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -2125,7 +2125,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2153,7 +2153,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2181,7 +2181,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2209,7 +2209,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2254,7 +2254,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -2271,7 +2271,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2306,7 +2306,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2341,7 +2341,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2376,7 +2376,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2444,7 +2444,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -2454,7 +2454,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2482,7 +2482,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2510,7 +2510,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2538,7 +2538,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 339;
+        float key = 339;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2566,7 +2566,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2594,7 +2594,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2622,7 +2622,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2665,7 +2665,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -2675,7 +2675,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2703,7 +2703,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2731,7 +2731,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2759,7 +2759,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = MAX_ENTRIES;
+        float key = MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2787,7 +2787,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2816,7 +2816,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
 
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2844,7 +2844,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 3*MAX_ENTRIES;
+        float key = 3*MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2858,7 +2858,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)+200;
+        float key = (3*MAX_ENTRIES)+200;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2872,7 +2872,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        float key = (3*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2901,7 +2901,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2915,7 +2915,7 @@ void ixTest_data_test_ge(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -1000;
+        float key = -1000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, GE_OP, &key));
@@ -2984,7 +2984,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -2994,7 +2994,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3022,7 +3022,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3050,7 +3050,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3078,7 +3078,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3106,7 +3106,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -8000;
+        float key = -8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3163,7 +3163,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -3180,7 +3180,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3215,7 +3215,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3250,7 +3250,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3285,7 +3285,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3321,7 +3321,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -8000;
+        float key = -8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3387,7 +3387,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -3397,7 +3397,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3425,7 +3425,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3453,7 +3453,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3481,7 +3481,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 339;
+        float key = 339;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3509,7 +3509,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3537,7 +3537,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3565,7 +3565,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3622,7 +3622,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -3632,7 +3632,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3660,7 +3660,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3688,7 +3688,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3716,7 +3716,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = MAX_ENTRIES;
+        float key = MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3744,7 +3744,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3773,7 +3773,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
 
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3801,7 +3801,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 3*MAX_ENTRIES;
+        float key = 3*MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3829,7 +3829,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)+200;
+        float key = (3*MAX_ENTRIES)+200;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3858,7 +3858,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        float key = (3*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3886,7 +3886,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3914,7 +3914,7 @@ void ixTest_data_test_lt(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -1000;
+        float key = -1000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LT_OP, &key));
@@ -3983,7 +3983,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -3993,7 +3993,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4021,7 +4021,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4049,7 +4049,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4077,7 +4077,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4105,7 +4105,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -8000;
+        float key = -8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4162,7 +4162,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)MAX_ENTRIES; i+=2)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -4179,7 +4179,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4214,7 +4214,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4249,7 +4249,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4284,7 +4284,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4320,7 +4320,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -8000;
+        float key = -8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4386,7 +4386,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)2*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -4396,7 +4396,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4424,7 +4424,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4452,7 +4452,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4480,7 +4480,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 339;
+        float key = 339;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4508,7 +4508,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4536,7 +4536,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4564,7 +4564,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4621,7 +4621,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
         for(int i=0; i<(int)3*MAX_ENTRIES; i++)
         {
-            int k = i;
+            float k = i;
             struct RID r = {i*10,i*100};
 
             ZERO_ASSERT(handle.InsertEntry(&k, r));
@@ -4631,7 +4631,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 90;
+        float key = 90;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4659,7 +4659,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 0;
+        float key = 0;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4687,7 +4687,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 338;
+        float key = 338;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4715,7 +4715,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = MAX_ENTRIES;
+        float key = MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4743,7 +4743,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 500;
+        float key = 500;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4772,7 +4772,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
 
 
     {
-        int key = (2*MAX_ENTRIES)-1;
+        float key = (2*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4800,7 +4800,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 3*MAX_ENTRIES;
+        float key = 3*MAX_ENTRIES;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4828,7 +4828,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)+200;
+        float key = (3*MAX_ENTRIES)+200;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4857,7 +4857,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = (3*MAX_ENTRIES)-1;
+        float key = (3*MAX_ENTRIES)-1;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4885,7 +4885,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = 8000;
+        float key = 8000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4913,7 +4913,7 @@ void ixTest_data_test_le(IX_Manager *ixmgr) // {{{
     }
 
     {
-        int key = -1000;
+        float key = -1000;
         struct RID aux_rid;
 
         ZERO_ASSERT(scan.OpenScan(handle, LE_OP, &key));
@@ -4962,13 +4962,12 @@ int main()
   cleanup();
 
   cout << "Insert and IndexScan Tests" << endl << endl;
-  debug=1;
   ixTest_data_test_eq(ixmgr);
-  //ixTest_data_test_ne(ixmgr);
-  //ixTest_data_test_gt(ixmgr);
-  //ixTest_data_test_ge(ixmgr);
-  //ixTest_data_test_lt(ixmgr);
-  //ixTest_data_test_le(ixmgr);
+  ixTest_data_test_ne(ixmgr);
+  ixTest_data_test_gt(ixmgr);
+  ixTest_data_test_ge(ixmgr);
+  ixTest_data_test_lt(ixmgr);
+  ixTest_data_test_le(ixmgr);
 
   cout << "OK" << endl;
 }
