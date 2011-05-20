@@ -36,9 +36,9 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
 	else
 	{
 		if (indexHandle.attr.type == TypeReal)
-			node.find(*((float*)value),rid);
+			node.find(*((float*)value),rid,true);
 		else if (indexHandle.attr.type == TypeInt)
-			node.find(*((int*)value),rid);
+			node.find(*((int*)value),rid,true);
 		else
 			return -1;
 	}

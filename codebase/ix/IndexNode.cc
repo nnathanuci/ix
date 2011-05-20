@@ -121,20 +121,20 @@ RC IndexNode::find_entry( Entry& e )
 	return 0;
 }
 
-RC IndexNode::find(int key, RID& r_val)
+RC IndexNode::find(int key, RID& r_val, bool is_index)
 {
 	Entry e;
 	e.setKey(key);
-	RC ret = tree_search(ROOT_PAGE, e, r_val);
+	RC ret = tree_search(ROOT_PAGE, e, r_val, is_index);
 	return ret;
 }
 
-RC IndexNode::find(float key, RID& r_val)
+RC IndexNode::find(float key, RID& r_val, bool is_index)
 {
 	Entry e;
 	e.setKey(key);
 	e.setMode(TypeReal);
-	return tree_search_real(ROOT_PAGE, e, r_val);
+	return tree_search_real(ROOT_PAGE, e, r_val, is_index);
 }
 RC IndexNode::get_leftmost_data_node(RID& r_val)
 {
@@ -155,11 +155,14 @@ RC IndexNode::get_leftmost_data_node(RID& r_val)
 	return 0;
 }
 
-RC IndexNode::tree_search_real(unsigned int nodePointer, Entry key, RID& r_val)
+RC IndexNode::tree_search_real(unsigned int nodePointer, Entry key, RID& r_val, bool ret_index_page)
 {
 	unsigned char* root[PF_PAGE_SIZE];
 	handle.ReadNode(nodePointer, root);
 	this->read_node(root, nodePointer);
+
+	if (num_entries < 1)
+			return -1;
 
 	float leftmost_key    	= this->entries[0].getKeyReal();
 	Entry rightmost_entry	= (this->entries[this->num_entries - 1]);
@@ -171,16 +174,19 @@ RC IndexNode::tree_search_real(unsigned int nodePointer, Entry key, RID& r_val)
 		e.setMode(TypeReal);
 		e.setKey(key.getKeyReal());
 		RC rc 	= find_entry(e);
-		r_val.pageNum	= this->getPage_num();//e.getPage()
+		if (ret_index_page)
+			r_val.pageNum	= this->getPage_num();//e.getPage()
+		else
+			r_val.pageNum	= e.getPage();
 		r_val.slotNum	= e.getSlot();
 		return rc;
 	}
 	else
 	{
 		if( key.getKeyReal() < leftmost_key )
-			ret = this->tree_search_real(this->left, key, r_val);
+			ret = this->tree_search_real(this->left, key, r_val, ret_index_page);
 		else if( key.getKeyReal() >= rightmost_entry.getKeyReal() )
-			ret = this->tree_search_real(rightmost_entry.getPage(), key, r_val );
+			ret = this->tree_search_real(rightmost_entry.getPage(), key, r_val, ret_index_page);
 		else
 		{
 			float left		= leftmost_key;
@@ -192,7 +198,7 @@ RC IndexNode::tree_search_real(unsigned int nodePointer, Entry key, RID& r_val)
 			{
 				if (left <= key.getKeyReal() &&  right > key.getKeyReal() )
 				{
-					ret = this->tree_search_real(entries[iter].getPage(), key, r_val);
+					ret = this->tree_search_real(entries[iter].getPage(), key, r_val, ret_index_page);
 					found = true;
 				}
 
@@ -205,11 +211,14 @@ RC IndexNode::tree_search_real(unsigned int nodePointer, Entry key, RID& r_val)
 	return ret;
 }
 
-RC IndexNode::tree_search(unsigned int nodePointer, Entry key, RID& r_val)
+RC IndexNode::tree_search(unsigned int nodePointer, Entry key, RID& r_val, bool ret_index_page)
 {
 	unsigned char* root[PF_PAGE_SIZE];
 	handle.ReadNode(nodePointer, root);
 	this->read_node(root, nodePointer);
+
+	if (num_entries < 1)
+		return -1;
 
 	int leftmost_key       = this->entries[0].getKey();
 	Entry rightmost_entry  = (this->entries[this->num_entries - 1]);
@@ -220,16 +229,19 @@ RC IndexNode::tree_search(unsigned int nodePointer, Entry key, RID& r_val)
 		Entry e;
 		e.setKey(key.getKey());
 		RC rc 	= find_entry(e);
-		r_val.pageNum	= this->getPage_num();//e.getPage()
+		if (ret_index_page)
+			r_val.pageNum	= this->getPage_num();//e.getPage()
+		else
+			r_val.pageNum	= e.getPage();
 		r_val.slotNum	= e.getSlot();
 		return rc;
 	}
 	else
 	{
 		if( key.getKey() < leftmost_key )
-			ret = this->tree_search(this->left, key, r_val);
+			ret = this->tree_search(this->left, key, r_val, ret_index_page);
 		else if( key.getKey() >= rightmost_entry.getKey() )
-			ret = this->tree_search(rightmost_entry.getPage(), key, r_val );
+			ret = this->tree_search(rightmost_entry.getPage(), key, r_val, ret_index_page );
 		else
 		{
 			int left		= leftmost_key;
@@ -241,7 +253,7 @@ RC IndexNode::tree_search(unsigned int nodePointer, Entry key, RID& r_val)
 			{
 				if (left <= key.getKey() &&  right > key.getKey() )
 				{
-					ret = this->tree_search(entries[iter].getPage(), key, r_val);
+					ret = this->tree_search(entries[iter].getPage(), key, r_val, ret_index_page);
 					found = true;
 				}
 
@@ -731,24 +743,47 @@ RC IndexNode::remove(int key)
 	unsigned char* read_buffer [PF_PAGE_SIZE]  = {0};
 	unsigned char* write_buffer [PF_PAGE_SIZE] = {0};
 
-	//No root.
-	if (handle.GetNumberOfPages() == 0)
-		return -1;
+	RID r_val;
+	RC ret = find( key, r_val, true);
 
-	handle.ReadNode(ROOT_PAGE, read_buffer);
-	this->read_node(read_buffer, ROOT_PAGE);
+	if (ret)
+		return ret;
 
-	if ( type == TYPE_DATA )
-	{
-		//remove_entry(key);
-	}
-	else
-	{
-		cerr << ("XX Only data pages currently supported.\n");
-	}
+	handle.ReadNode(r_val.pageNum, read_buffer);
+	this->read_node(read_buffer, r_val.pageNum);
+
+	Entry to_remove;
+	to_remove.setKey(key);
+	this->remove_entry(to_remove);
 
 	this->write_node(write_buffer);
-	handle.WriteNode(ROOT_PAGE, write_buffer);
+	handle.WriteNode(r_val.pageNum, write_buffer);
+	return 0;
+}
+
+RC IndexNode::remove(float key)
+{
+	unsigned char* read_buffer [PF_PAGE_SIZE]  = {0};
+	unsigned char* write_buffer [PF_PAGE_SIZE] = {0};
+
+	RID r_val;
+	RC ret = find( key, r_val, true);
+
+	if (ret)
+		return ret;
+
+	handle.ReadNode(r_val.pageNum, read_buffer);
+	this->read_node(read_buffer, r_val.pageNum);
+
+	Entry to_remove;
+	to_remove.setMode(TypeReal);
+	to_remove.setKey(key);
+
+	if ( (ret = this->remove_entry(to_remove)) )
+		return ret;
+
+	this->write_node(write_buffer);
+	handle.WriteNode(r_val.pageNum, write_buffer);
 	return 0;
 }
 

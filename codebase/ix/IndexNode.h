@@ -11,13 +11,13 @@
 #include "ix.h"
 
 #define ENTRY_TRAILER_START	(PF_PAGE_SIZE - 20)
-#define MAX_ENTRIES 		((PF_PAGE_SIZE - 20)/8)
+#define MAX_ENTRIES 		((PF_PAGE_SIZE - 20)/12)
 #define TYPE_DATA			(0)
 #define TYPE_INDEX			(1)
 #define TYPE_DELETED 		(2)
 
 #define NODE_HEADER_BYTES	(0)
-#define D					(10)
+#define D					(MAX_ENTRIES/2)
 #define	ROOT_PAGE			(0)
 
 class Entry;
@@ -172,11 +172,11 @@ public:
 
 	RC find_entry( Entry& e);
 
-	RC find(int key, RID& ret);
-	RC find(float key, RID& ret);
-	RC tree_search_real(unsigned int nodePointer, Entry key, RID& ret);
+	RC find(int key, RID& ret, bool ret_ind);
+	RC find(float key, RID& ret, bool ret_ind);
+	RC tree_search_real(unsigned int nodePointer, Entry key, RID& ret, bool ret_ind);
 
-	RC tree_search(unsigned int nodePointer, Entry e, RID& ret);
+	RC tree_search(unsigned int nodePointer, Entry e, RID& ret, bool ret_ind);
 
 	RC insert(int value, unsigned int r_ptr, unsigned int slot);
 	RC insert(float value, unsigned int r_ptr, unsigned int slot);
@@ -186,6 +186,7 @@ public:
 	RC get_leftmost_data_node(RID& r_val);
 
 	RC remove(int value);
+	RC remove(float key);
 
 	void* write_node(void* p);
 	void* new_page(void* p);

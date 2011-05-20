@@ -3,21 +3,28 @@
 
 RC IX_IndexHandle::InsertEntry(void *key, const RID &rid)
 {
-	IndexNode node(*this, 0);
+	RC ret;
+	IndexNode node( (*this), 0 );
 	if (this->attr.type == TypeReal)
-		node.insert(*((float*)key),rid.pageNum,rid.slotNum);
+		ret= node.insert(*((float*)key), rid.pageNum, rid.slotNum);
 	else if (this->attr.type == TypeInt)
-		node.insert( *((int*)key),rid.pageNum,rid.slotNum );
+		ret= node.insert( *((int*)key), rid.pageNum, rid.slotNum );
 	else
-		return -1;
+		ret= -1;
 
-	return 0;
+	return ret;
 }
 
 RC IX_IndexHandle::DeleteEntry(void *key, const RID &rid)
 {
-	/*
-	 * NOT DONE.
-	 */
-	return -1;
+	RC ret;
+	IndexNode node( (*this), 0 );
+	if (this->attr.type == TypeReal)
+		ret= node.remove(*((float*)key));
+	else if (this->attr.type == TypeInt)
+		ret= node.remove( *((int*)key));
+	else
+		ret= -1;
+
+	return ret;
 }
