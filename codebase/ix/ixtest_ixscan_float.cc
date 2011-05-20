@@ -152,7 +152,7 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
     }
 
     {
-        float key = 25;
+        float key = 24.5;
         RID aux_rid = {0, 0};
 
         /* equality test on key=20 */

@@ -1,7 +1,7 @@
 
 include ../makefile.inc
 
-all: libix.a ixtest ixtest_ixmgr ixtest_ixhandle ixtest_ixscan_int ixtest_ixscan_int_rand ixtest_ixscan_float ixtest_ixscan_float_rand ixtest_dummy_ixscan
+all: libix.a ixtest ixtest_ixmgr ixtest_ixhandle ixtest_ixscan_int ixtest_ixscan_int_rand ixtest_ixscan_float ixtest_ixscan_float_rand ixtest_dummy_ixscan ixtest_ixscan_int_delete
 
 # lib file dependencies
 libix.a: libix.a(ix.o ixmgr.o ixhandle.o ixscan.o IndexNode.o)
@@ -23,6 +23,7 @@ ixtest: ixtest.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 ixtest_ixmgr: ixtest_ixmgr.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 
 ixtest_ixscan_int: ixtest_ixscan_int.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
+ixtest_ixscan_int_delete: ixtest_ixscan_int_delete.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 ixtest_ixscan_int_rand: ixtest_ixscan_int_rand.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 ixtest_ixscan_float: ixtest_ixscan_float.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
 ixtest_ixscan_float_rand: ixtest_ixscan_float_rand.o libix.a $(CODEROOT)/pf/libpf.a $(CODEROOT)/rm/librm.a
