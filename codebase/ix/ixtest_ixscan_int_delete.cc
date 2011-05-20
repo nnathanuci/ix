@@ -143,6 +143,8 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
         ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         ZERO_ASSERT(scan.CloseScan());
+
+        cout << "PASS: handle.OpenScan(...), scan.GetNextEntry(...) == IX_EOF, scan.CloseScan()" << endl;
     }
 
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
