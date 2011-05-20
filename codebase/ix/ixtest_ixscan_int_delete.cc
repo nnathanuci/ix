@@ -123,6 +123,28 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
         cout << "PASS: handle.GetEntries([1,3,...,337])" << endl;
     }
 
+    {
+        /* delete all odd entries. */
+        int k;
+
+        for (k = 1; k < (int)MAX_ENTRIES; k+=2)
+        {
+            struct RID r = {k*10, k*100};
+            ZERO_ASSERT(handle.DeleteEntry(&k, r));
+        }
+
+        cout << "PASS: handle.DeleteEntries([1,3,...,337])" << endl;
+    }
+
+    {
+        /* no more elements should exist. */
+        int k = 0;
+        struct RID aux_rid = {0,0};
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        ZERO_ASSERT(scan.CloseScan());
+    }
+
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
     cout << "PASS: CloseIndex(handle)" << endl;
 
