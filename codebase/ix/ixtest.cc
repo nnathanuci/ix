@@ -16,6 +16,15 @@ IX_Manager *ixManager = IX_Manager::Instance();
 const int success = 0;
 
 
+void cleanup() // {{{
+{
+  const char *files[5] = { "systemcatalog", "tbl_employee", "tbl_employee.Age", "tbl_employee.Height", "tbl_employee.EmpName" };
+
+  for(int i = 0; i < 5; i++)
+    remove(files[i]);
+
+} // }}}
+
 void createTable(RM *rm, const string tablename)
 {
     // Functions tested
@@ -1160,7 +1169,9 @@ void testCase_extra_2(const string tablename, const string attrname)
 int main()
 {
     cout << "****Starting Test Cases****" << endl;
-    
+   
+    cleanup(); 
+
     RM *rm = RM::Instance();
     createTable(rm, "tbl_employee");
     
