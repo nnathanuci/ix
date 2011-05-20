@@ -29,6 +29,10 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
 	RID rid;
 	rid.pageNum = 0;
 	rid.slotNum = 0;
+
+        if (!indexHandle.in_use)
+            return -1;
+
 	IndexNode node( (IX_IndexHandle&) indexHandle, 0);
 
 	if (compOp == NE_OP || compOp == NO_OP)
@@ -62,6 +66,10 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
 
     /* debugging only. */
     //handle.DumpNode(anchor_pid, 3);
+
+    /* don't inspect the value if it's NOOP. */
+    if (compOp == NO_OP)
+        return 0;
 
     if (cond_attr.type == TypeInt)
     {
