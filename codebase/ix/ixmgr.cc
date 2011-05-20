@@ -88,6 +88,12 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
     PF_FileHandle handle;
     unsigned int pid;
 
+    /* need to close index in order to open one. */
+    if(indexHandle.in_use)
+    {
+        return -1;
+    }
+
     /* open table. */
     if (rm->openTable(tableName, handle))
         return -1;
@@ -114,10 +120,21 @@ RC IX_Manager::OpenIndex(const string tableName, const string attributeName, IX_
         assert(pid == 0);
     }
 
+    indexHandle.in_use = true;
+
     return 0;
 }
 
 RC IX_Manager::CloseIndex(IX_IndexHandle &indexHandle)
 {
-    return(indexHandle.CloseFile());
+    /* not in use, cannot close index. */
+    if(!indexHandle.in_use)
+        return 1;
+
+    if(indexHandle.CloseFile())
+        return 1;
+
+    indexHandle.in_use = false;
+
+    return 0;
 }

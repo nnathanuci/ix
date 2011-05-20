@@ -31,7 +31,7 @@ RC IX_IndexScan::OpenScan(const IX_IndexHandle &indexHandle, CompOp compOp, void
 	rid.slotNum = 0;
 	IndexNode node( (IX_IndexHandle&) indexHandle, 0);
 
-	if (compOp == NE_OP) //  || compOp == NO_OP)
+	if (compOp == NE_OP || compOp == NO_OP)
 		node.get_leftmost_data_node(rid);
 	else
 	{

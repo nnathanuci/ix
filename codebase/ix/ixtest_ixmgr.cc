@@ -108,6 +108,30 @@ void ixTest_OpenClose(IX_Manager *ixmgr)
     t1_attrs.push_back((struct Attribute) { "a2", TypeReal, 0 });
     t1_attrs.push_back((struct Attribute) { "a3", TypeVarChar, 500 });
 
+    /* create table, create indices, open index twice, delete indices, delete table. */ // {{{
+    cout << "\n[ opening index twice. ]" << endl;
+    ZERO_ASSERT(rm->createTable(t1, t1_attrs));
+    cout << "PASS: createTable(" << output_schema(t1, t1_attrs) << ")" << endl;
+
+    ZERO_ASSERT(ixmgr->CreateIndex("t1", "a1"));
+    cout << "PASS: CreateIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(ixmgr->OpenIndex("t1", "a1", ix_handle1));
+    cout << "PASS: OpenIndex(t1,a1,h1)" << endl;
+
+    NONZERO_ASSERT(ixmgr->OpenIndex("t1", "a1", ix_handle1));
+    cout << "PASS: OpenIndex(t1,a1,h1) [failed, already opened]" << endl;
+
+    ZERO_ASSERT(ixmgr->CloseIndex(ix_handle1));
+    cout << "PASS: CloseIndex(h1)" << endl;
+
+    ZERO_ASSERT(ixmgr->DestroyIndex("t1", "a1"));
+    cout << "PASS: DestroyIndex(t1,a1)" << endl;
+
+    ZERO_ASSERT(rm->deleteTable(t1));
+    cout << "PASS: deleteTable(" << t1 << ")" << endl;
+    // }}}
+
     /* create table, create indices, open indices, create new index nodes, delete indices, delete table. */ // {{{
     cout << "\n[ index creation/deletion test. ]" << endl;
     ZERO_ASSERT(rm->createTable(t1, t1_attrs));
@@ -128,6 +152,12 @@ void ixTest_OpenClose(IX_Manager *ixmgr)
     assert(ix_handle2.GetNumberOfPages() == 1);
     cout << "PASS: h2.GetNumberOfPages == 1 [root node]" << endl;
 
+    ZERO_ASSERT(ixmgr->CloseIndex(ix_handle1));
+    cout << "PASS: CloseIndex(h1)" << endl;
+
+    ZERO_ASSERT(ixmgr->CloseIndex(ix_handle2));
+    cout << "PASS: CloseIndex(h2)" << endl;
+
     ZERO_ASSERT(ixmgr->DestroyIndex("t1", "a1"));
     cout << "PASS: DestroyIndex(t1,a1)" << endl;
     ZERO_ASSERT(ixmgr->DestroyIndex("t1", "a2"));
@@ -147,6 +177,8 @@ int main()
 
   cout << "CreateIndex and DestroyIndex Tests" << endl << endl;
   ixTest_CreateDestroy(ixmgr);
+
+  cleanup();
 
   cout << "OpenIndex and CloseIndex Tests" << endl << endl;
   ixTest_OpenClose(ixmgr);

@@ -95,6 +95,9 @@ class IX_IndexHandle {
 
   Attribute attr;
 
+ public:
+  bool in_use;
+
  private:
   PF_Manager *pf;
   PF_FileHandle handle;

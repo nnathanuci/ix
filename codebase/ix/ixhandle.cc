@@ -4,6 +4,7 @@
 IX_IndexHandle::IX_IndexHandle()
 {
     pf = PF_Manager::Instance();
+    in_use = false;
 }
 
 IX_IndexHandle::~IX_IndexHandle()
