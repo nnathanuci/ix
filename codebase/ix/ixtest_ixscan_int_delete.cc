@@ -140,11 +140,13 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
         /* no more elements should exist. */
         int k = 0;
         struct RID aux_rid = {0,0};
-        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
-        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
-        ZERO_ASSERT(scan.CloseScan());
 
-        cout << "PASS: handle.OpenScan(...), scan.GetNextEntry(...) == IX_EOF, scan.CloseScan()" << endl;
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
+        cout << "PASS: scan.OpenScan(...)" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan() == IX_EOF" << endl;
     }
 
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
