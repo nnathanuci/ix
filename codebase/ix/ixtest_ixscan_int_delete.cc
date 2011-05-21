@@ -146,7 +146,102 @@ void ixTest_data_test_eq(IX_Manager *ixmgr) // {{{
         assert(scan.GetNextEntry(aux_rid) == IX_EOF);
         cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
         ZERO_ASSERT(scan.CloseScan());
-        cout << "PASS: scan.CloseScan() == IX_EOF" << endl;
+        cout << "PASS: scan.CloseScan()" << endl;
+    }
+
+    {
+        int k = 20;
+        struct RID r = {k*10, k*100};
+        ZERO_ASSERT(handle.InsertEntry(&k, r));
+        cout << "PASS: handle.InsertEntry(" << k << "," << r.pageNum << "," << r.slotNum << ")" << endl;
+
+        k = 350;
+        r.pageNum = k*10; r.slotNum = k*100;
+        ZERO_ASSERT(handle.InsertEntry(&k, r));
+        cout << "PASS: handle.InsertEntry(" << k << "," << r.pageNum << "," << r.slotNum << ")" << endl;
+
+        /* missing key. */
+        k = 169;
+        struct RID aux_rid = {0,0};
+
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
+        cout << "PASS: scan.OpenScan([EQ_OP " << k << "])" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry(" << k << ") == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+        /* keys should exist. */
+        k = 20;
+        aux_rid.pageNum = aux_rid.slotNum = 0;
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
+        cout << "PASS: scan.OpenScan([EQ_OP " << k << "])" << endl;
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        assert(aux_rid.pageNum == (unsigned int) k*10 && aux_rid.slotNum == (unsigned int) k*100);
+        cout << "PASS: scan.GetNextEntry(" << k << ")" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+        k = 350;
+        aux_rid.pageNum = aux_rid.slotNum = 0;
+        ZERO_ASSERT(scan.OpenScan(handle, EQ_OP, &k));
+        cout << "PASS: scan.OpenScan([EQ_OP " << k << "])" << endl;
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        assert(aux_rid.pageNum == (unsigned int) k*10 && aux_rid.slotNum == (unsigned int) k*100);
+        cout << "PASS: scan.GetNextEntry(" << k << ")" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+
+        /* some NE_OP tests. */        
+        k = 350;
+        aux_rid.pageNum = aux_rid.slotNum = 0;
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &k));
+        cout << "PASS: scan.OpenScan([NE_OP " << k << "])" << endl;
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        k=20; /* we should only get one record. */
+        assert(aux_rid.pageNum == (unsigned int) k*10 && aux_rid.slotNum == (unsigned int) k*100);
+        cout << "PASS: scan.GetNextEntry(" << k << ")" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+        /* some NE_OP tests. */        
+        k = 20;
+        aux_rid.pageNum = aux_rid.slotNum = 0;
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &k));
+        cout << "PASS: scan.OpenScan([NE_OP " << k << "])" << endl;
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        k=350; /* we should only get one record. */
+        assert(aux_rid.pageNum == (unsigned int) k*10 && aux_rid.slotNum == (unsigned int) k*100);
+        cout << "PASS: scan.GetNextEntry(" << k << ")" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
+
+        /* some NE_OP tests. */        
+        k = 5;
+        aux_rid.pageNum = aux_rid.slotNum = 0;
+        ZERO_ASSERT(scan.OpenScan(handle, NE_OP, &k));
+        cout << "PASS: scan.OpenScan([NE_OP " << k << "])" << endl;
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        k=20; /* we should only get one record. */
+        assert(aux_rid.pageNum == (unsigned int) k*10 && aux_rid.slotNum == (unsigned int) k*100);
+        cout << "PASS: scan.GetNextEntry(" << k << ")" << endl;
+        k=350; /* we should only get one record. */
+        ZERO_ASSERT(scan.GetNextEntry(aux_rid));
+        assert(aux_rid.pageNum == (unsigned int) k*10 && aux_rid.slotNum == (unsigned int) k*100);
+        cout << "PASS: scan.GetNextEntry(" << k << ")" << endl;
+        assert(scan.GetNextEntry(aux_rid) == IX_EOF);
+        cout << "PASS: scan.GetNextEntry() == IX_EOF" << endl;
+        ZERO_ASSERT(scan.CloseScan());
+        cout << "PASS: scan.CloseScan()" << endl;
     }
 
     ZERO_ASSERT(ixmgr->CloseIndex(handle));
